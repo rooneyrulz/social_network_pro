@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "simple social-network app",
     "main": "server.js",
-    "type": "module",
     "repository": "https://github.com/rooneyrulz/social_network_pro.git",
     "author": "ruzny <ruzny@ruzny.com>",
     "license": "MIT",
