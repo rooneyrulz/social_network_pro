@@ -15,7 +15,6 @@ db(server);
 
 if (process.env.NODE_ENV === 'development') app.use(logger('dev'));
 
-// TESTING ROUTE
 app.use('/test', require('./routes/test'));
 
 module.exports = server;
