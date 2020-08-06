@@ -20,5 +20,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/test', require('./routes/test'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/post', require('./routes/post'));
 
 module.exports = server;
