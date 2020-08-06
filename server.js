@@ -15,6 +15,7 @@ db(server);
 
 if (process.env.NODE_ENV === 'development') app.use(logger('dev'));
 
-app.use('/test', require('./routes/test'));
+app.use('/api/test', require('./routes/test'));
+app.use('/api/auth', require('./routes/auth'));
 
 module.exports = server;
