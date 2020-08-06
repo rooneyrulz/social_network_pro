@@ -1,14 +1,7 @@
 const { verify } = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  const authHeader = req.get('Authorization');
-  if (!authHeader) {
-    req.isAuth = false;
-    res.status(401).send('Authorization failed..');
-    next();
-  }
-
-  const token = authHeader.split(' ')[1];
+  const token = req.get('Authorization');
   if (!token || token === '') {
     req.isAuth = false;
     res.status(401).send('Authorization failed..');
@@ -32,5 +25,7 @@ module.exports = (req, res, next) => {
   }
 
   req.isAuth = true;
-  req.user = decoded;
+  req.user = decoded.user;
+  req.userData = decoded;
+  next();
 };

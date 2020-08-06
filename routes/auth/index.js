@@ -3,6 +3,7 @@ const { hash, compare } = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 
 const User = require('../../models/User');
+const isAuth = require('../../middleware/is-auth');
 
 const router = Router({ strict: true });
 
@@ -34,6 +35,16 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/user', async (req, res, next) => {});
+router.get('/user', isAuth, async (req, res, next) => {
+  const { _id } = req.user;
+  try {
+    const user = await User.findById(_id).lean();
+    if (!user)
+      return res.status(400).send('User not found, Authorization denied..');
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
 
 module.exports = router;
