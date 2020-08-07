@@ -35,4 +35,19 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
   }
 });
 
+router.delete('/:post_id', isAuth, async (req, res, next) => {
+  const { post_id } = req.params;
+  const { _id } = req.user;
+  try {
+    const post = await Post.findById(post_id).lean();
+    if (!post) return res.status(404).send('Post not found..');
+    if (post.owner.toString() !== _id.toString())
+      return res.status(400).send('Permission denied..');
+    const isDeleted = await Post.findByIdAndRemove(post_id);
+    return res.status(200).json(isDeleted);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
 module.exports = router;
