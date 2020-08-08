@@ -62,4 +62,28 @@ router.put('/:post_id/update/:comment_id', isAuth, async (req, res, next) => {
   }
 });
 
+// DELETE EXISTING COMMENT
+router.delete(
+  '/:post_id/delete/:comment_id',
+  isAuth,
+  async (req, res, next) => {
+    const { post_id, comment_id } = req.params;
+
+    try {
+      const post = await Post.findById(post_id).lean();
+      if (!post) return res.status(404).send('Post not found..');
+      const comment = await Comment.findById(comment_id).lean();
+      if (!comment) return res.status(404).send('Comment not found..');
+      if (comment.post !== post_id)
+        return res.status(400).send('Comment does not exist on the post..');
+      if (comment.owner !== req.user._id && post.owner !== req.user._id)
+        return res.status(400).send('Permission deined..');
+      const isDeleted = await Comment.findByIdAndRemove(comment_id).lean();
+      return res.status(200).json(isDeleted);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
+);
+
 module.exports = router;
