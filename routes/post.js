@@ -1,10 +1,12 @@
 const { Router } = require('express');
 
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 const isAuth = require('../middleware/is-auth');
 
 const router = Router({ strict: true });
 
+// GET ALL POSTS
 router.get('/', async (req, res, next) => {
   try {
     const posts = await Post.find().sort({ date: -1 }).lean();
@@ -14,6 +16,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// CREATE NEW POSTS
 router.post('/create', isAuth, async (req, res, next) => {
   const { text } = req.body;
   try {
@@ -24,6 +27,7 @@ router.post('/create', isAuth, async (req, res, next) => {
   }
 });
 
+// GET POST BY ID
 router.get('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   try {
@@ -35,6 +39,7 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
   }
 });
 
+// UPDATE EXISTING POST
 router.put('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   const { text } = req.body;
@@ -54,6 +59,7 @@ router.put('/:post_id', isAuth, async (req, res, next) => {
   }
 });
 
+// GET ALL THE POSTS BY OWNER
 router.get('/user/post', isAuth, async (req, res, next) => {
   const { _id } = req.user;
   try {
@@ -65,6 +71,7 @@ router.get('/user/post', isAuth, async (req, res, next) => {
   }
 });
 
+// DELETE POSTS
 router.delete('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   const { _id } = req.user;
@@ -73,6 +80,8 @@ router.delete('/:post_id', isAuth, async (req, res, next) => {
     if (!post) return res.status(404).send('Post not found..');
     if (post.owner.toString() !== _id.toString())
       return res.status(400).send('Permission denied..');
+    const comments = await Comment.find({ post: post_id }).lean();
+    comments.length && Comment.deleteMany({ post: post_id });
     const isDeleted = await Post.findByIdAndRemove(post_id);
     return res.status(200).json(isDeleted);
   } catch (error) {
