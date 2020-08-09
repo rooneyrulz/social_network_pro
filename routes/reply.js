@@ -1,0 +1,104 @@
+const { Router } = require('express');
+
+const isAuth = require('../middleware/is-auth');
+
+const Post = require('../models/Post');
+const Comment = require('../models/Comment');
+const Reply = require('../models/Reply');
+
+const router = Router({ strict: true });
+
+// GET ALL REPLY
+router.get('/comment/:comment_id', isAuth, async (req, res, next) => {
+  const { comment_id } = req.params;
+
+  try {
+    const replies = await Reply.find({ comment: comment_id }).lean();
+    return res.status(200).json(replies);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+// CREATE NEW COMMENTS
+router.post(
+  '/post/:post_id/comment/:comment_id',
+  isAuth,
+  async (req, res, next) => {
+    const { post_id, comment_id } = req.params;
+    const { text } = req.body;
+
+    try {
+      const post = await Post.findById(post_id).lean();
+      if (!post) return res.status(404).send('Post not found..');
+      const comment = await Comment.findById(comment_id).lean();
+      if (!comment) return res.status(404).send('Comment not found..');
+      const reply = await new Reply({
+        text,
+        post: post_id,
+        comment: comment_id,
+        owner: req.user,
+      }).save();
+      return res.status(201).json(reply);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
+);
+
+// UPDATE EXISTING REPLY
+router.put(
+  '/post/:post_id/comment/:comment_id/update/reply_id',
+  isAuth,
+  async (req, res, next) => {
+    const { post_id, comment_id, reply_id } = req.params;
+    const { text } = req.body;
+
+    try {
+      const post = await Post.findById(post_id).lean();
+      if (!post) return res.status(404).send('Post not found..');
+      const comment = await Comment.findById(comment_id).lean();
+      if (!comment) return res.status(404).send('Comment not found..');
+      const reply = await Reply.findById(reply_id).lean();
+      if (!reply) return res.status(404).send('Reply not found..');
+      if (reply.comment !== comment_id)
+        return res.status(400).send('Reply does not exist on the comment..');
+      if (reply.owner !== req.user._id)
+        return res.status(400).send('Permission deined..');
+      const isUpdated = await Reply.findByIdAndUpdate(
+        { _id: reply_id },
+        { text, post: post_id, comment: comment_id, owner: req.user },
+        { new: true }
+      ).lean();
+      return res.status(200).json(isUpdated);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
+);
+
+// DELETE EXISTING COMMENT
+router.delete(
+  '/comment/:comment_id/delete/:reply_id',
+  isAuth,
+  async (req, res, next) => {
+    const { comment_id, reply_id } = req.params;
+
+    try {
+      const comment = await Comment.findById(comment_id).lean();
+      if (!comment) return res.status(404).send('Comment not found..');
+      const reply = await Reply.findById(reply_id).lean();
+      if (!reply) return res.status(404).send('Reply not found..');
+      if (reply.comment !== comment_id)
+        return res.status(400).send('Reply does not exist on the comment..');
+      if (reply.owner !== req.user._id)
+        return res.status(400).send('Permission deined..');
+      const isDeleted = await Reply.findByIdAndRemove(reply_id).lean();
+      return res.status(200).json(isDeleted);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
+);
+
+module.exports = router;
