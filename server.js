@@ -22,5 +22,6 @@ app.use('/api/test', require('./routes/test'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/post', require('./routes/post'));
 app.use('/api/comment', require('./routes/comment'));
+app.use('/api/like', require('./routes/like'));
 
 module.exports = server;
