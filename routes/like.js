@@ -97,7 +97,7 @@ router.get('/comment/:comment_id/remove', isAuth, async (req, res, next) => {
     const comment = await Comment.findById(comment_id).lean();
     if (!comment) return res.status(404).send('Comment not found..');
     const isLiked = await Like.findOne()
-      .and([{ comment: post_id }, { owner: req.user }])
+      .and([{ comment: comment_id }, { owner: req.user }])
       .lean();
     if (!isLiked)
       return res.status(400).send('Comment has not already been liked..');

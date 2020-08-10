@@ -4,6 +4,7 @@ const isAuth = require('../middleware/is-auth');
 
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+const Like = require('../models/Like');
 const Reply = require('../models/Reply');
 
 const router = Router({ strict: true });
@@ -85,6 +86,16 @@ router.delete(
         post.owner.toString() !== req.user._id.toString()
       )
         return res.status(400).send('Permission deined..');
+      const replies = await Reply.find()
+        .and([{ post: post_id }, { comment: comment_id }])
+        .lean();
+      replies.length &&
+        (await Reply.deleteMany().and([
+          { post: post_id },
+          { comment: comment_id },
+        ]));
+      const likes = await Like.find({ comment: comment_id }).lean();
+      likes.length && (await Like.deleteMany({ comment: comment_id }).lean());
       const isDeleted = await Comment.findByIdAndRemove(comment_id).lean();
       return res.status(200).json(isDeleted);
     } catch (error) {
