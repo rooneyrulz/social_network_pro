@@ -19,7 +19,7 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
 });
 
 // CREATE NEW COMMENTS
-router.post('/:post_id', isAuth, async (req, res, next) => {
+router.post('/:post_id/create', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   const { text } = req.body;
 
@@ -38,18 +38,18 @@ router.post('/:post_id', isAuth, async (req, res, next) => {
 });
 
 // UPDATE EXISTING COMMENT
-router.put('/:post_id/update/:comment_id', isAuth, async (req, res, next) => {
+router.put('/:post_id/:comment_id/update', isAuth, async (req, res, next) => {
   const { post_id, comment_id } = req.params;
-  const { text } = req.params;
+  const { text } = req.body;
 
   try {
     const post = await Post.findById(post_id).lean();
     if (!post) return res.status(404).send('Post not found..');
     const comment = await Comment.findById(comment_id).lean();
     if (!comment) return res.status(404).send('Comment not found..');
-    if (comment.post !== post_id)
+    if (comment.post.toString() !== post_id.toString())
       return res.status(400).send('Comment does not exist on the post..');
-    if (comment.owner !== req.user._id)
+    if (comment.owner.toString() !== req.user._id.toString())
       return res.status(400).send('Permission deined..');
     const isUpdated = await Comment.findByIdAndUpdate(
       { _id: comment_id },
@@ -64,7 +64,7 @@ router.put('/:post_id/update/:comment_id', isAuth, async (req, res, next) => {
 
 // DELETE EXISTING COMMENT
 router.delete(
-  '/:post_id/delete/:comment_id',
+  '/:post_id/:comment_id/delete',
   isAuth,
   async (req, res, next) => {
     const { post_id, comment_id } = req.params;
@@ -74,9 +74,12 @@ router.delete(
       if (!post) return res.status(404).send('Post not found..');
       const comment = await Comment.findById(comment_id).lean();
       if (!comment) return res.status(404).send('Comment not found..');
-      if (comment.post !== post_id)
+      if (comment.post.toString() !== post_id.toString())
         return res.status(400).send('Comment does not exist on the post..');
-      if (comment.owner !== req.user._id && post.owner !== req.user._id)
+      if (
+        comment.owner.toString() !== req.user._id.toString() &&
+        post.owner.toString() !== req.user._id.toString()
+      )
         return res.status(400).send('Permission deined..');
       const isDeleted = await Comment.findByIdAndRemove(comment_id).lean();
       return res.status(200).json(isDeleted);
