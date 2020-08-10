@@ -87,8 +87,16 @@ router.delete('/:post_id', isAuth, async (req, res, next) => {
     comments.length && (await Comment.deleteMany({ post: post_id }));
     const replies = await Reply.find({ post: post_id }).lean();
     replies.length && (await Reply.deleteMany({ post: post_id }));
-    const likes = await Like.find({ post: post_id }).lean();
-    likes.length && (await Like.deleteMany({ post: post_id }));
+    const postLikes = await Like.find()
+      .and([{ post: post_id }, { isPostLike: true }])
+      .lean();
+    postLikes.length &&
+      (await Like.deleteMany().and([{ post: post_id }, { isPostLike: true }]));
+    const commentLikes = await Like.find()
+      .and([{ post: post_id }, { isPostLike: false }])
+      .lean();
+    commentLikes.length &&
+      (await Like.deleteMany().and([{ post: post_id }, { isPostLike: false }]));
     const isDeleted = await Post.findByIdAndRemove(post_id);
     return res.status(200).json(isDeleted);
   } catch (error) {

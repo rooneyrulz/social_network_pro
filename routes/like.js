@@ -12,7 +12,9 @@ const router = Router({ strict: true });
 router.get('/post/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   try {
-    const likes = await Like.find({ post: post_id }).lean();
+    const likes = await Like.find()
+      .and([{ post: post_id }, { isPostLike: true }])
+      .lean();
     return res.status(200).json(likes);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -27,10 +29,14 @@ router.get('/post/:post_id/create', isAuth, async (req, res, next) => {
     const post = await Post.findById(post_id).lean();
     if (!post) return res.status(404).send('Post not found..');
     const isLiked = await Like.findOne()
-      .and([{ post: post_id }, { owner: req.user }])
+      .and([{ post: post_id }, { owner: req.user }, { isPostLike: true }])
       .lean();
     if (isLiked) return res.status(400).send('Post has already been liked..');
-    const like = await new Like({ post: post_id, owner: req.user }).save();
+    const like = await new Like({
+      post: post_id,
+      owner: req.user,
+      isPostLike: true,
+    }).save();
     return res.status(201).json(like);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -45,7 +51,7 @@ router.get('/post/:post_id/remove', isAuth, async (req, res, next) => {
     const post = await Post.findById(post_id).lean();
     if (!post) return res.status(404).send('Post not found..');
     const isLiked = await Like.findOne()
-      .and([{ post: post_id }, { owner: req.user }])
+      .and([{ post: post_id }, { owner: req.user }, { isPostLike: true }])
       .lean();
     if (!isLiked)
       return res.status(400).send('Post has not already been liked..');
@@ -57,10 +63,12 @@ router.get('/post/:post_id/remove', isAuth, async (req, res, next) => {
 });
 
 // GET ALL LIKES BY COMMENT
-router.get('/comment/:comment_id', isAuth, async (req, res, next) => {
+router.get('/:post_id/:comment_id', isAuth, async (req, res, next) => {
   const { comment_id } = req.params;
   try {
-    const likes = await Like.find({ comment: comment_id }).lean();
+    const likes = await Like.find()
+      .and([{ post: post_id }, { comment: comment_id }, { isPostLike: false }])
+      .lean();
     return res.status(200).json(likes);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -68,20 +76,27 @@ router.get('/comment/:comment_id', isAuth, async (req, res, next) => {
 });
 
 // CREATE LIKES ON COMMENTS
-router.get('/comment/:comment_id/create', isAuth, async (req, res, next) => {
-  const { comment_id } = req.params;
+router.get('/:post_id/:comment_id/create', isAuth, async (req, res, next) => {
+  const { post_id, comment_id } = req.params;
 
   try {
     const comment = await Comment.findById(comment_id).lean();
     if (!comment) return res.status(404).send('Comment not found..');
     const isLiked = await Like.findOne()
-      .and([{ comment: comment_id }, { owner: req.user }])
+      .and([
+        { post: post_id },
+        { comment: comment_id },
+        { owner: req.user },
+        { isPostLike: false },
+      ])
       .lean();
     if (isLiked)
       return res.status(400).send('Comment has already been liked..');
     const like = await new Like({
+      post: post_id,
       comment: comment_id,
       owner: req.user,
+      isPostLike: false,
     }).save();
     return res.status(201).json(like);
   } catch (error) {
@@ -90,14 +105,19 @@ router.get('/comment/:comment_id/create', isAuth, async (req, res, next) => {
 });
 
 // REMOVE LIKES ON COMMENT
-router.get('/comment/:comment_id/remove', isAuth, async (req, res, next) => {
-  const { comment_id } = req.params;
+router.get('/:post_id/:comment_id/remove', isAuth, async (req, res, next) => {
+  const { post_id, comment_id } = req.params;
 
   try {
     const comment = await Comment.findById(comment_id).lean();
     if (!comment) return res.status(404).send('Comment not found..');
     const isLiked = await Like.findOne()
-      .and([{ comment: comment_id }, { owner: req.user }])
+      .and([
+        { post: post_id },
+        { comment: comment_id },
+        { owner: req.user },
+        { isPostLike: false },
+      ])
       .lean();
     if (!isLiked)
       return res.status(400).send('Comment has not already been liked..');
