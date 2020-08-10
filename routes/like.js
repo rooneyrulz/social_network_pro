@@ -9,7 +9,7 @@ const Comment = require('../models/Comment');
 const router = Router({ strict: true });
 
 // GET ALL LIKES BY POST
-router.get('/post/:post_id', isAuth, async (req, res, next) => {
+router.get('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   try {
     const likes = await Like.find()
@@ -22,7 +22,7 @@ router.get('/post/:post_id', isAuth, async (req, res, next) => {
 });
 
 // CREATE LIKES
-router.get('/post/:post_id/create', isAuth, async (req, res, next) => {
+router.get('/:post_id/create', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
 
   try {
@@ -44,7 +44,7 @@ router.get('/post/:post_id/create', isAuth, async (req, res, next) => {
 });
 
 // REMOVE LIKES
-router.get('/post/:post_id/remove', isAuth, async (req, res, next) => {
+router.get('/:post_id/remove', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
 
   try {

@@ -43,7 +43,7 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
 });
 
 // UPDATE EXISTING POST
-router.put('/:post_id', isAuth, async (req, res, next) => {
+router.put('/:post_id/update', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   const { text } = req.body;
   try {
@@ -75,7 +75,7 @@ router.get('/user/post', isAuth, async (req, res, next) => {
 });
 
 // DELETE POSTS
-router.delete('/:post_id', isAuth, async (req, res, next) => {
+router.delete('/:post_id/delete', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   const { _id } = req.user;
   try {
