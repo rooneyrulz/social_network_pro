@@ -1,8 +1,10 @@
 const { Router } = require('express');
 
 const isAuth = require('../middleware/is-auth');
+
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+const Reply = require('../models/Reply');
 
 const router = Router({ strict: true });
 
@@ -11,6 +13,8 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
 
   try {
+    // const post = await Post.findById(post_id).lean();
+    // if (!post) return res.status(404).send('Post not found..');
     const comments = await Comment.find({ post: post_id }).lean();
     return res.status(200).json(comments);
   } catch (error) {

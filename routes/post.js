@@ -2,6 +2,9 @@ const { Router } = require('express');
 
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+const Reply = require('../models/Reply');
+const Like = require('../models/Like');
+
 const isAuth = require('../middleware/is-auth');
 
 const router = Router({ strict: true });
@@ -81,7 +84,11 @@ router.delete('/:post_id', isAuth, async (req, res, next) => {
     if (post.owner.toString() !== _id.toString())
       return res.status(400).send('Permission denied..');
     const comments = await Comment.find({ post: post_id }).lean();
-    comments.length && Comment.deleteMany({ post: post_id });
+    comments.length && (await Comment.deleteMany({ post: post_id }));
+    const replies = await Reply.find({ post: post_id }).lean();
+    replies.length && (await Reply.deleteMany({ post: post_id }));
+    const likes = await Like.find({ post: post_id }).lean();
+    likes.length && (await Like.deleteMany({ post: post_id }));
     const isDeleted = await Post.findByIdAndRemove(post_id);
     return res.status(200).json(isDeleted);
   } catch (error) {
