@@ -1,23 +1,33 @@
 const { Router } = require('express');
 
-const isAuth = require('../middleware/is-auth');
-
+// MODELS
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const Like = require('../models/Like');
 const Reply = require('../models/Reply');
+
+// HELPERS
+const { getPost, getCommentLikes, getReplies } = require('../helpers');
+
+const isAuth = require('../middleware/is-auth');
 
 const router = Router({ strict: true });
 
 // GET ALL COMMENTS BY POSTS
 router.get('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
-
+  let commentList = [];
   try {
-    // const post = await Post.findById(post_id).lean();
-    // if (!post) return res.status(404).send('Post not found..');
+    const post = await Post.findById(post_id).lean();
+    if (!post) return res.status(404).send('Post not found..');
     const comments = await Comment.find({ post: post_id }).lean();
-    return res.status(200).json(comments);
+    for (const comment of comments) {
+      comment.post = await getPost(comment.post);
+      comment.likes = await getCommentLikes(comment.post, comment._id);
+      comment.replies = await getReplies(comment.post, comment._id);
+      commentList.push(comment);
+    }
+    return res.status(200).json(commentList);
   } catch (error) {
     return res.status(500).send(error.message);
   }

@@ -1,20 +1,30 @@
 const { Router } = require('express');
 
-const isAuth = require('../middleware/is-auth');
-
+// MODELS
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const Reply = require('../models/Reply');
+
+// HELPERS
+const { getPost, getCommentById } = require('../helpers');
+
+const isAuth = require('../middleware/is-auth');
 
 const router = Router({ strict: true });
 
 // GET ALL REPLY
 router.get('/:comment_id', isAuth, async (req, res, next) => {
   const { comment_id } = req.params;
-
+  let replyList = [];
   try {
     const replies = await Reply.find({ comment: comment_id }).lean();
-    return res.status(200).json(replies);
+    for (const reply of replies) {
+      reply.post = await getPost(reply.post);
+      // reply.likes = await getCommentLikes(comment.post, comment._id);
+      reply.comment = await getCommentById(reply.comment);
+      replyList.push(reply);
+    }
+    return res.status(200).json(replyList);
   } catch (error) {
     return res.status(500).send(error.message);
   }

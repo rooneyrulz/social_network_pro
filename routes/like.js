@@ -1,21 +1,30 @@
 const { Router } = require('express');
 
-const isAuth = require('../middleware/is-auth');
-
+// MODELS
 const Like = require('../models/Like');
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+
+// HELPERS
+const { getPost, getCommentById } = require('../helpers');
+
+const isAuth = require('../middleware/is-auth');
 
 const router = Router({ strict: true });
 
 // GET ALL LIKES BY POST
 router.get('/:post_id', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
+  let likeList = [];
   try {
     const likes = await Like.find()
       .and([{ post: post_id }, { isPostLike: true }])
       .lean();
-    return res.status(200).json(likes);
+    for (const like of likes) {
+      like.post = await getPost(like.post);
+      likeList.push(like);
+    }
+    return res.status(200).json(likeList);
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -65,10 +74,16 @@ router.get('/:post_id/remove', isAuth, async (req, res, next) => {
 // GET ALL LIKES BY COMMENT
 router.get('/:post_id/:comment_id', isAuth, async (req, res, next) => {
   const { post_id, comment_id } = req.params;
+  let likeList = [];
   try {
     const likes = await Like.find()
       .and([{ post: post_id }, { comment: comment_id }, { isPostLike: false }])
       .lean();
+    for (const like of likes) {
+      like.post = await getPost(like.post);
+      like.comment = await getCommentById(like.comment);
+      likeList.push(like);
+    }
     return res.status(200).json(likes);
   } catch (error) {
     return res.status(500).send(error.message);
