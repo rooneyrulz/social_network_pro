@@ -1,9 +1,13 @@
 const { Router } = require('express');
 
+// MODELS
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const Reply = require('../models/Reply');
 const Like = require('../models/Like');
+
+// HELPERS
+const { getPostLikes, getComments } = require('../helpers');
 
 const isAuth = require('../middleware/is-auth');
 
@@ -11,9 +15,15 @@ const router = Router({ strict: true });
 
 // GET ALL POSTS
 router.get('/', isAuth, async (req, res, next) => {
+  let postList = [];
   try {
     const posts = await Post.find().sort({ date: -1 }).lean();
-    return res.status(200).json(posts);
+    for (const post of posts) {
+      post.likes = await getPostLikes(post._id);
+      post.comments = await getComments(post._id);
+      postList.push(post);
+    }
+    return res.status(200).json(postList);
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -36,6 +46,8 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
   try {
     const post = await Post.findById(post_id).lean();
     if (!post) return res.status(404).send('Post not found..');
+    post.likes = await getPostLikes(post._id);
+    post.comments = await getComments(post._id);
     return res.status(200).json(post);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -65,10 +77,15 @@ router.put('/:post_id/update', isAuth, async (req, res, next) => {
 // GET ALL THE POSTS BY OWNER
 router.get('/user/post', isAuth, async (req, res, next) => {
   const { _id } = req.user;
+  let postList = [];
   try {
-    const post = await (await Post.find({ owner: _id })).lean();
-    if (!post) return res.status(404).send('User has no posts yet..');
-    return res.status(200).json(post);
+    const posts = await Post.find({ owner: _id }).lean();
+    for (const post of posts) {
+      post.likes = await getPostLikes(post._id);
+      post.comments = await getComments(post._id);
+      postList.push(post);
+    }
+    return res.status(200).json(postList);
   } catch (error) {
     return res.status(500).send(error.message);
   }
