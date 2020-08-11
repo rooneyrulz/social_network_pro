@@ -64,7 +64,7 @@ router.get('/:post_id/remove', isAuth, async (req, res, next) => {
 
 // GET ALL LIKES BY COMMENT
 router.get('/:post_id/:comment_id', isAuth, async (req, res, next) => {
-  const { comment_id } = req.params;
+  const { post_id, comment_id } = req.params;
   try {
     const likes = await Like.find()
       .and([{ post: post_id }, { comment: comment_id }, { isPostLike: false }])

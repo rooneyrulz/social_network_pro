@@ -10,7 +10,7 @@ const isAuth = require('../middleware/is-auth');
 const router = Router({ strict: true });
 
 // GET ALL POSTS
-router.get('/', async (req, res, next) => {
+router.get('/', isAuth, async (req, res, next) => {
   try {
     const posts = await Post.find().sort({ date: -1 }).lean();
     return res.status(200).json(posts);

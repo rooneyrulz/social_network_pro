@@ -4,6 +4,7 @@ const likeSchema = new mongoose.Schema({
   post: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
+    required: true,
   },
   comment: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,6 +13,7 @@ const likeSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
   isPostLike: {
     type: Boolean,
