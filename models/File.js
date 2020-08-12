@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.Schema({
-  text: {
-    type: String,
+const fileSchema = new mongoose.Schema({
+  post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
     required: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
+  },
+  file: {
+    type: Object,
     required: true,
   },
   date: {
@@ -16,4 +21,4 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('File', fileSchema);
