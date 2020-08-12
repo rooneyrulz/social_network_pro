@@ -8,7 +8,6 @@ const Like = require('../models/Like');
 
 // HELPERS
 const { getPostLikes, getComments } = require('../helpers');
-const files = require('../middleware/files');
 
 const isAuth = require('../middleware/is-auth');
 
@@ -31,12 +30,11 @@ router.get('/', isAuth, async (req, res, next) => {
 });
 
 // CREATE NEW POSTS
-router.post('/create', isAuth, files, async (req, res, next) => {
+router.post('/create', isAuth, async (req, res, next) => {
   const { text } = req.body;
   try {
     const post = await new Post({
       text,
-      images: req.files,
       owner: req.user,
     }).save();
     return res.status(201).json(post);
@@ -60,7 +58,7 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
 });
 
 // UPDATE EXISTING POST
-router.patch('/:post_id/update', isAuth, files, async (req, res, next) => {
+router.put('/:post_id/update', isAuth, async (req, res, next) => {
   const { post_id } = req.params;
   const { text } = req.body;
   try {
