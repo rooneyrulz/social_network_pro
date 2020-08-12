@@ -65,4 +65,34 @@ router.get('/:profile_id', isAuth, async (req, res, next) => {
   }
 });
 
+// UPDATE EXISTING PROFILE
+router.patch('/:profile_id/update', isAuth, files, async (req, res, next) => {
+  const { profile_id } = req.params;
+  try {
+    const profile = await Profile.findOne()
+      .and([{ _id: profile_id }, { owner: req.user }])
+      .lean();
+    if (!profile) return res.status(400).send('Profile not found..');
+    if (profile.owner.toString() !== req.user._id.toString())
+      return res.status(400).send('Permission denied..');
+    const newProfile = await Profile.findByIdAndUpdate(
+      { _id: profile_id },
+      req.file
+        ? {
+            ...req.body,
+            owner: req.user,
+            displayProfile: req.file,
+          }
+        : {
+            ...req.body,
+            owner: req.user,
+          },
+      { new: true }
+    ).save();
+    return res.status(201).json(newProfile);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+});
+
 module.exports = router;
