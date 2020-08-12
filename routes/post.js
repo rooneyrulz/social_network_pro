@@ -8,6 +8,7 @@ const Like = require('../models/Like');
 
 // HELPERS
 const { getPostLikes, getComments } = require('../helpers');
+const files = require('../middleware/files');
 
 const isAuth = require('../middleware/is-auth');
 
@@ -30,11 +31,12 @@ router.get('/', isAuth, async (req, res, next) => {
 });
 
 // CREATE NEW POSTS
-router.post('/create', isAuth, async (req, res, next) => {
+router.post('/create', isAuth, files, async (req, res, next) => {
   const { text } = req.body;
   try {
     const post = await new Post({
       text,
+      image: req.file,
       owner: req.user,
     }).save();
     return res.status(201).json(post);
@@ -58,7 +60,7 @@ router.get('/:post_id', isAuth, async (req, res, next) => {
 });
 
 // UPDATE EXISTING POST
-router.put('/:post_id/update', isAuth, async (req, res, next) => {
+router.put('/:post_id/update', isAuth, files, async (req, res, next) => {
   const { post_id } = req.params;
   const { text } = req.body;
   try {
@@ -68,7 +70,7 @@ router.put('/:post_id/update', isAuth, async (req, res, next) => {
       return res.status(400).send('Permission denied..');
     const isUpdated = await Post.findByIdAndUpdate(
       { _id: post_id },
-      { text, owner: req.user },
+      { text, image: req.file, owner: req.user },
       { new: true }
     );
     return res.status(200).json(isUpdated);
