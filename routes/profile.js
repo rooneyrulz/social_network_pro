@@ -2,10 +2,6 @@ const { Router } = require('express');
 
 // MODELS
 const Profile = require('../models/Profile');
-const Post = require('../models/Post');
-const Comment = require('../models/Comment');
-const Reply = require('../models/Reply');
-const Like = require('../models/Like');
 
 // MIDDLEWARES
 const isAuth = require('../middleware/is-auth');
@@ -88,9 +84,10 @@ router.patch('/:profile_id/update', isAuth, files, async (req, res, next) => {
             owner: req.user,
           },
       { new: true }
-    ).save();
-    return res.status(201).json(newProfile);
+    );
+    return res.status(200).json(newProfile);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json(error);
   }
 });
