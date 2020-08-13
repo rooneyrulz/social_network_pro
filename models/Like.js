@@ -15,9 +15,9 @@ const likeSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  isPostLike: {
-    type: Boolean,
-    enum: [true, false],
+  kind: {
+    type: String,
+    enum: ['post', 'comment', 'reply'],
   },
   date: {
     type: Date,

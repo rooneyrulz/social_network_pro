@@ -85,7 +85,9 @@ exports.deleteComment = async (req, res, next) => {
         { post: post_id },
         { comment: comment_id },
       ]));
-    const likes = await Like.find({ comment: comment_id }).lean();
+    const likes = await Like.find()
+      .and([{ comment: comment_id }, { kind: 'comment' }])
+      .lean();
     likes.length && (await Like.deleteMany({ comment: comment_id }).lean());
     const isDeleted = await Comment.findByIdAndRemove(comment_id).lean();
     return res.status(200).json(isDeleted);

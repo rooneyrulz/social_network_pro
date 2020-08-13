@@ -6,7 +6,7 @@ exports.getLikesByPost = async (req, res, next) => {
   let likeList = [];
   try {
     const likes = await Like.find()
-      .and([{ post: post_id }, { isPostLike: true }])
+      .and([{ post: post_id }, { kind: 'post' }])
       .lean();
     for (const like of likes) {
       like.post = await getPost(like.post);
@@ -25,13 +25,13 @@ exports.createLike = async (req, res, next) => {
     const post = await Post.findById(post_id).lean();
     if (!post) return res.status(404).send('Post not found..');
     const isLiked = await Like.findOne()
-      .and([{ post: post_id }, { owner: req.user }, { isPostLike: true }])
+      .and([{ post: post_id }, { owner: req.user }, { kind: 'post' }])
       .lean();
     if (isLiked) return res.status(400).send('Post has already been liked..');
     const like = await new Like({
       post: post_id,
       owner: req.user,
-      isPostLike: true,
+      kind: 'post',
     }).save();
     return res.status(201).json(like);
   } catch (error) {
@@ -46,7 +46,7 @@ exports.removeLike = async (req, res, next) => {
     const post = await Post.findById(post_id).lean();
     if (!post) return res.status(404).send('Post not found..');
     const isLiked = await Like.findOne()
-      .and([{ post: post_id }, { owner: req.user }, { isPostLike: true }])
+      .and([{ post: post_id }, { owner: req.user }, { kind: 'post' }])
       .lean();
     if (!isLiked)
       return res.status(400).send('Post has not already been liked..');
@@ -62,7 +62,7 @@ exports.getLikesByComment = async (req, res, next) => {
   let likeList = [];
   try {
     const likes = await Like.find()
-      .and([{ post: post_id }, { comment: comment_id }, { isPostLike: false }])
+      .and([{ post: post_id }, { comment: comment_id }, { kind: 'comment' }])
       .lean();
     for (const like of likes) {
       like.post = await getPost(like.post);
@@ -86,7 +86,7 @@ exports.createLikeOnComment = async (req, res, next) => {
         { post: post_id },
         { comment: comment_id },
         { owner: req.user },
-        { isPostLike: false },
+        { kind: 'comment' },
       ])
       .lean();
     if (isLiked)
@@ -95,7 +95,7 @@ exports.createLikeOnComment = async (req, res, next) => {
       post: post_id,
       comment: comment_id,
       owner: req.user,
-      isPostLike: false,
+      kind: 'comment',
     }).save();
     return res.status(201).json(like);
   } catch (error) {
@@ -114,7 +114,7 @@ exports.removeLikeOnComment = async (req, res, next) => {
         { post: post_id },
         { comment: comment_id },
         { owner: req.user },
-        { isPostLike: false },
+        { kind: 'comment' },
       ])
       .lean();
     if (!isLiked)
