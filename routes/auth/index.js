@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { hash, compare } = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 
-const User = require('../../models/User');
+const { User } = require('../../models');
 const isAuth = require('../../middleware/is-auth');
 
 const router = Router({ strict: true });

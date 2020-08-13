@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 // MODELS
-const Profile = require('../models/Profile');
+const { Profile } = require('../models');
 
 // MIDDLEWARES
 const isAuth = require('../middleware/is-auth');

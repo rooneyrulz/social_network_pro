@@ -1,11 +1,6 @@
 const { Router } = require('express');
 
-// MODELS
-const Post = require('../models/Post');
-const Comment = require('../models/Comment');
-const Reply = require('../models/Reply');
-
-// HELPERS
+const { Post, Comment, Reply } = require('../models');
 const { getPost, getCommentById } = require('../helpers');
 
 const isAuth = require('../middleware/is-auth');
