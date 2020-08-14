@@ -77,6 +77,13 @@ exports.deleteComment = async (req, res, next) => {
       post.owner.toString() !== req.user._id.toString()
     )
       return res.status(400).send('Permission deined..');
+    const replyLike = await Like.find()
+      .and([{ post: post_id }, { comment: comment_id }, { kind: 'reply' }])
+      .lean();
+    replyLike.length &&
+      (await Like.deleteMany()
+        .and([{ post: post_id }, { comment: comment_id }, { kind: 'reply' }])
+        .lean());
     const replies = await Reply.find()
       .and([{ post: post_id }, { comment: comment_id }])
       .lean();

@@ -100,6 +100,11 @@ exports.deletePost = async (req, res, next) => {
       .lean();
     commentLikes.length &&
       (await Like.deleteMany().and([{ post: post_id }, { kind: 'comment' }]));
+    const replyLikes = await Like.find()
+      .and([{ post: post_id }, { kind: 'reply' }])
+      .lean();
+    replyLikes.length &&
+      (await Like.deleteMany().and([{ post: post_id }, { kind: 'reply' }]));
     const isDeleted = await Post.findByIdAndRemove(post_id);
     return res.status(200).json(isDeleted);
   } catch (error) {
