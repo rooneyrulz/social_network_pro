@@ -24,7 +24,7 @@ exports.getComments = async (id) => {
 exports.getPostLikes = async (id) => {
   try {
     const likes = await Like.find()
-      .and([{ post: id }, { isPostLike: true }])
+      .and([{ post: id }, { kind: 'post' }])
       .lean();
     return likes;
   } catch (error) {
@@ -35,7 +35,7 @@ exports.getPostLikes = async (id) => {
 exports.getCommentLikes = async (post_id, comment_id) => {
   try {
     const likes = await Like.find()
-      .and([{ post: post_id }, { comment: comment_id }, { isPostLike: false }])
+      .and([{ post: post_id }, { comment: comment_id }, { kind: 'comment' }])
       .lean();
     return likes;
   } catch (error) {
@@ -69,6 +69,17 @@ exports.getReplyByComment = async (post_id, comment_id, reply_id) => {
       .and([{ _id: reply_id }, { post: post_id }, { comment: comment_id }])
       .lean();
     return reply;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.getLikesByReply = async (comment_id, reply_id) => {
+  try {
+    const likes = await Like.find()
+      .and([{ reply: reply_id }, { comment: comment_id }, { kind: 'reply' }])
+      .lean();
+    return likes;
   } catch (error) {
     console.log(error.message);
   }

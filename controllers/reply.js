@@ -1,5 +1,10 @@
 const { Post, Comment, Reply } = require('../models');
-const { getPost, getCommentById } = require('../helpers');
+const {
+  getPost,
+  getCommentById,
+  getReplyByComment,
+  getLikesByReply,
+} = require('../helpers');
 
 exports.getRepliesByComment = async (req, res, next) => {
   const { comment_id } = req.params;
@@ -8,7 +13,7 @@ exports.getRepliesByComment = async (req, res, next) => {
     const replies = await Reply.find({ comment: comment_id }).lean();
     for (const reply of replies) {
       reply.post = await getPost(reply.post);
-      // reply.likes = await getCommentLikes(comment.post, comment._id);
+      reply.likes = await getLikesByReply(comment_id, reply._id);
       reply.comment = await getCommentById(reply.comment);
       replyList.push(reply);
     }
