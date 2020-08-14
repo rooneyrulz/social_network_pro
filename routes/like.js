@@ -31,4 +31,25 @@ router.get(
   likeController.removeLikeOnComment
 );
 
+// GET ALL LIKES BY REPLY
+router.get(
+  '/:post_id/:comment_id/:reply_id',
+  isAuth,
+  likeController.getLikesByReply
+);
+
+// CREATE LIKES ON REPLY
+router.get(
+  '/:post_id/:comment_id/:reply_id/create',
+  isAuth,
+  likeController.createLikeOnReply
+);
+
+// REMOVE LIKES ON REPLY
+router.get(
+  '/:post_id/:comment_id/:reply_id/remove',
+  isAuth,
+  likeController.removeLikeOnReply
+);
+
 module.exports = router;

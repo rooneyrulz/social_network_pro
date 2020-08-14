@@ -62,3 +62,14 @@ exports.getCommentById = async (id) => {
     console.log(error.message);
   }
 };
+
+exports.getReplyByComment = async (post_id, comment_id, reply_id) => {
+  try {
+    const reply = await Reply.findOne()
+      .and([{ _id: reply_id }, { post: post_id }, { comment: comment_id }])
+      .lean();
+    return reply;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
