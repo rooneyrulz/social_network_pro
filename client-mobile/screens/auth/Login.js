@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 import globalStyles from '../../styles/styles';
 
-const Login = ({ navigation }) => {
-  return <View style={globalStyles.container}></View>;
+const Login = ({ route }) => {
+  return (
+    <View style={globalStyles.container}>
+      {/* <Button title='Signup' onPress={() => navigation.push('Register')} /> */}
+    </View>
+  );
 };
 
 export default Login;

@@ -8,7 +8,7 @@ import {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     // alignItems: 'center',
     // justifyContent: 'center',
   },
