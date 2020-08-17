@@ -1,16 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Register from './screens/auth/Register';
-import Login from './screens/auth/Login';
+import Register from '../screens/auth/Register';
+import Login from '../screens/auth/Login';
 
 const AuthStack = createStackNavigator();
 
-const App = () => {
+export const AuthNavigation = () => {
   return (
     <NavigationContainer>
       <AuthStack.Navigator>
@@ -20,7 +17,3 @@ const App = () => {
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({});
-
-export default App;
