@@ -8,10 +8,9 @@ import {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'pink',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // paddingTop: Platform.OS === 'android' && NativeStatusBar.currentHeight,
+    backgroundColor: 'yellow',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     // color: '#000',

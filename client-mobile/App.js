@@ -7,11 +7,11 @@ import AuthNavigation from './routes/Auth';
 import HomeNavigation from './routes/Home';
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
   return (
     <NavigationContainer>
       {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
-      {/* <StatusBar style='auto' /> */}
+      <StatusBar style='auto' />
     </NavigationContainer>
   );
 };
