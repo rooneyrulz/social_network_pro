@@ -1,18 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 
 import AuthNavigation from './routes/Auth';
 import HomeNavigation from './routes/Home';
 
+import AuthContext from './contexts/AuthContext';
+import AuthProvider from './providers/AuthProvider';
+
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const { authenticated } = useContext(AuthContext);
+  console.log(authenticated);
   return (
-    <NavigationContainer>
-      {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
-      <StatusBar style='auto' />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
+        <StatusBar style='auto' />
+      </NavigationContainer>
+    </AuthProvider>
   );
 };
 
