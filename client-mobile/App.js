@@ -1,15 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { AuthNavigation } from './routes';
+import AuthNavigation from './routes/Auth';
+import HomeNavigation from './routes/Home';
 
 const App = () => {
+  const [authenticated, setAuthenticated] = useState(true);
   return (
     <NavigationContainer>
-      <AuthNavigation />
-      <StatusBar style='auto' />
+      {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
+      {/* <StatusBar style='auto' /> */}
     </NavigationContainer>
   );
 };

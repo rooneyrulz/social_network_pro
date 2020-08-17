@@ -6,7 +6,7 @@ import Login from '../screens/auth/Login';
 
 const AuthStack = createStackNavigator();
 
-export const AuthNavigation = () => (
+export default () => (
   <AuthStack.Navigator>
     <AuthStack.Screen name='Register' component={Register} />
     <AuthStack.Screen name='Login' component={Login} />

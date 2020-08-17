@@ -11,6 +11,7 @@ export default StyleSheet.create({
     // backgroundColor: 'pink',
     // alignItems: 'center',
     // justifyContent: 'center',
+    // paddingTop: Platform.OS === 'android' && NativeStatusBar.currentHeight,
   },
   text: {
     // color: '#000',

@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 
-import globalStyles from '../../styles/styles';
+import ScreenContainer from '../../screens/ScreenContainer';
 
 const Register = ({ navigation }) => {
   return (
-    <View style={globalStyles.container}>
+    <ScreenContainer>
       <Button title='Login' onPress={() => navigation.push('Login')} />
-    </View>
+    </ScreenContainer>
   );
 };
 
