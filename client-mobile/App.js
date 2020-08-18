@@ -22,11 +22,8 @@ const loadFonts = () =>
   });
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [fontLoaded, setFontLoaded] = useState(false);
-  // const context = useContext(AuthContext);
-  // console.log(context);
 
   useEffect(() => {
     setTimeout(() => setIsLoading((prev) => false), 3000);
@@ -38,24 +35,28 @@ const App = () => {
         <ActivityIndicator />
       </ScreenContainer>
     );
+  }
+
+  if (fontLoaded) {
+    return (
+      <AuthProvider>
+        <AuthContext.Consumer>
+          {({ authenticated }) => (
+            <NavigationContainer>
+              {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
+              <StatusBar style='auto' />
+            </NavigationContainer>
+          )}
+        </AuthContext.Consumer>
+      </AuthProvider>
+    );
   } else {
-    if (fontLoaded) {
-      return (
-        <AuthProvider>
-          <NavigationContainer>
-            {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
-            <StatusBar style='auto' />
-          </NavigationContainer>
-        </AuthProvider>
-      );
-    } else {
-      return (
-        <AppLoading
-          startAsync={loadFonts}
-          onFinish={() => setFontLoaded((prev) => true)}
-        />
-      );
-    }
+    return (
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => setFontLoaded((prev) => true)}
+      />
+    );
   }
 };
 

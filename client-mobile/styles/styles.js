@@ -8,13 +8,11 @@ import {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'yellow',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
     // color: '#000',
     fontSize: 20,
-    fontFamily: 'roboto-regular',
   },
 });

@@ -7,7 +7,6 @@ import globalStyle from '../styles/styles';
 const Post = ({ navigation }) => {
   return (
     <ScreenContainer>
-      <Text style={globalStyle.text}>Posts Feed</Text>
       <Button
         title='Go To Post Detail'
         onPress={() => navigation.push('PostDetail')}
