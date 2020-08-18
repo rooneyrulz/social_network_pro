@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useContext } from 'react';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import React, { useState, useContext, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
 
 import AuthNavigation from './routes/Auth';
 import HomeNavigation from './routes/Home';
@@ -9,19 +10,37 @@ import HomeNavigation from './routes/Home';
 import AuthContext from './contexts/AuthContext';
 import AuthProvider from './providers/AuthProvider';
 
-const App = () => {
-  const { authenticated } = useContext(AuthContext);
-  console.log(authenticated);
-  return (
-    <AuthProvider>
-      <NavigationContainer>
-        {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
-        <StatusBar style='auto' />
-      </NavigationContainer>
-    </AuthProvider>
-  );
-};
+const loadFonts = () =>
+  Font.loadAsync({
+    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    // 'nunito-sans-regular': require('./assets/fonts/NunitoSans-Regular.ttf'),
+    // 'nunito-sans-bold': require('./assets/fonts/NunitoSans-Bold.ttf'),
+  });
 
-const styles = StyleSheet.create({});
+const App = () => {
+  const [authenticated, setAuthenticated] = useState(true);
+  const [fontLoaded, setFontLoaded] = useState(false);
+  // const context = useContext(AuthContext);
+  // console.log(context.value);
+
+  if (fontLoaded) {
+    return (
+      <AuthProvider>
+        <NavigationContainer>
+          {!authenticated ? <AuthNavigation /> : <HomeNavigation />}
+          <StatusBar style='auto' />
+        </NavigationContainer>
+      </AuthProvider>
+    );
+  } else {
+    return (
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => setFontLoaded((prev) => true)}
+      />
+    );
+  }
+};
 
 export default App;

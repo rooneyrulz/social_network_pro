@@ -15,5 +15,6 @@ export default StyleSheet.create({
   text: {
     // color: '#000',
     fontSize: 20,
+    fontFamily: 'roboto-regular',
   },
 });

@@ -8,7 +8,7 @@ const AuthProvider = ({ children }) => {
   const login = () => setAuthenticated((prev) => true);
 
   return (
-    <AuthContext.Provider value={{ authenticated, login }}>
+    <AuthContext.Provider value={'Hello World..'}>
       {children}
     </AuthContext.Provider>
   );
