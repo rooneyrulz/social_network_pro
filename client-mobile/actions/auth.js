@@ -14,7 +14,7 @@ import setAuthToken from '../utils/setHeader';
 // Load User
 export const loadUser = () => async (dispatch) => {
   if (await AsyncStorage.getItem('token'))
-    setAuthToken(AsyncStorage.getItem('token'));
+    setAuthToken(await AsyncStorage.getItem('token'));
 
   const config = {
     header: {
