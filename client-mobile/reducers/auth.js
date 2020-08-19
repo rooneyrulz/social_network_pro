@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   userLoading: true,
-  token: AsyncStorage.getItem('token'),
+  token: AsyncStorage.getItem('token').then((value) => value),
   user: {},
   isAuthenticated: null,
 };

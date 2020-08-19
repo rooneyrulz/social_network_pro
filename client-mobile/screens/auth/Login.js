@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput, Alert } from 'react-native';
 
+// Redux
 import { connect } from 'react-redux';
+import { loginUser } from '../../actions/auth';
 
 import ScreenContainer from '../../screens/ScreenContainer';
 
-const Login = ({ navigation, auth: { isAuthenticated } }) => {
+const Login = ({ navigation, auth: { isAuthenticated }, loginUser }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -15,7 +17,7 @@ const Login = ({ navigation, auth: { isAuthenticated } }) => {
 
   const onHandleSubmit = (e) => {
     if (!username || !password) Alert.alert('Oops! Invalid fields');
-    console.log(formData);
+    loginUser(formData);
   };
 
   if (isAuthenticated) navigation.navigate('Home');
@@ -74,4 +76,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, {})(Login);
+export default connect(mapStateToProps, { loginUser })(Login);

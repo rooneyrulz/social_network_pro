@@ -11,7 +11,9 @@ import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setHeader';
 import RootNavigation from './routes/Root';
 
-if (AsyncStorage.getItem('token')) setAuthToken(AsyncStorage.getItem('token'));
+AsyncStorage.getItem('token').then((value) => {
+  if (value) setAuthToken(value);
+});
 
 const App = () => {
   useEffect(() => {
