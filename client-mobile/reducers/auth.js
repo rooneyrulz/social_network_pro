@@ -6,6 +6,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   AUTH_ERROR,
+  LOGOUT,
 } from '../actions/types';
 
 const initialState = {
@@ -23,7 +24,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         userLoading: false,
-        user: payload.user,
+        user: payload,
         isAuthenticated: true,
       };
 
@@ -32,15 +33,15 @@ export default (state = initialState, action) => {
       AsyncStorage.setItem('token', payload.token);
       return {
         ...state,
+        ...payload,
         userLoading: false,
-        token: payload.token,
-        user: payload.user,
         isAuthenticated: true,
       };
 
     case LOGIN_FAIL:
     case REGISTER_FAIL:
     case AUTH_ERROR:
+    case LOGOUT:
       AsyncStorage.removeItem('token');
       return {
         ...state,
