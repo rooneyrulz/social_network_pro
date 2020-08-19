@@ -2,8 +2,9 @@ const express = require('express');
 const { createServer } = require('http');
 const dotenv = require('dotenv');
 const logger = require('morgan');
+const cors = require('cors');
 
-// DB CONNECTTION
+// DB CONNECTION
 const db = require('./config/db');
 
 const app = express();
@@ -14,6 +15,8 @@ dotenv.config({ path: './config/config.env' });
 db(server);
 
 if (process.env.NODE_ENV === 'development') app.use(logger('dev'));
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
