@@ -6,7 +6,7 @@ import ScreenContainer from '../../screens/ScreenContainer';
 const Register = ({ navigation }) => {
   return (
     <ScreenContainer>
-      <Button title='Login' />
+      <Button title='Login' onPress={() => navigation.push('Login')} />
     </ScreenContainer>
   );
 };
