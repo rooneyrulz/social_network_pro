@@ -24,7 +24,7 @@ export const loadUser = () => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      'http://localhost:5000/api/auth/user',
+      'http://192.168.43.200:5000/api/auth/user',
       config
     );
     console.log(data);
