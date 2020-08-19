@@ -4,7 +4,7 @@ import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 // Redux
-import { connect, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 
