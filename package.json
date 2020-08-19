@@ -4,10 +4,10 @@
     "description": "simple social-network app",
     "main": "server.js",
     "scripts": {
-        "client-mobile": "expo start --prefix client-mobile",
+        "client-mobile": "npm start --prefix client-mobile",
         "start": "cross-env NODE_ENV=production node server",
         "server": "cross-env NODE_ENV=development nodemon server",
-        "dev": "concurrently \" yarn run server \" \" yarn run client-mobile \""
+        "dev": "concurrently \" npm run server \" \" npm run client-mobile \""
     },
     "repository": "https://github.com/rooneyrulz/social_network_pro.git",
     "author": "ruzny <ruzny@ruzny.com>",
