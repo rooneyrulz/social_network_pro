@@ -9,14 +9,14 @@ const AuthStack = createStackNavigator();
 export default () => (
   <AuthStack.Navigator>
     <AuthStack.Screen
-      name='Register'
-      component={Register}
-      options={{ title: 'Create Account' }}
-    />
-    <AuthStack.Screen
       name='Login'
       component={Login}
       options={{ title: 'Sign In' }}
+    />
+    <AuthStack.Screen
+      name='Register'
+      component={Register}
+      options={{ title: 'Create Account' }}
     />
   </AuthStack.Navigator>
 );

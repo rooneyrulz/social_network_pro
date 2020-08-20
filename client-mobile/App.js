@@ -16,9 +16,9 @@ AsyncStorage.getItem('token').then((value) => {
 });
 
 const App = () => {
-  useEffect(() => {
-    store.dispatch(loadUser());
-  }, []);
+  // useEffect(() => {
+  //   store.dispatch(loadUser());
+  // }, []);
 
   return (
     <Provider store={store}>
