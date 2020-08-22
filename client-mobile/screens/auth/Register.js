@@ -22,8 +22,8 @@ const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   registerContainer: {
-    width: '90%',
-    marginHorizontal: '5%',
+    flex: 1,
+    justifyContent: 'center',
   },
 
   helpTextWrapper: {

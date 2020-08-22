@@ -24,8 +24,8 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   loginContainer: {
-    width: '90%',
-    marginHorizontal: '5%',
+    flex: 1,
+    justifyContent: 'center',
   },
   helpTextWrapper: {
     alignItems: 'center',
