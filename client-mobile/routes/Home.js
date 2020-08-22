@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import PostStackScreen from './Post';
+import FeedStackScreen from './Feed';
 import ProfileStackScreen from './Profile';
 
 const Tabs = createBottomTabNavigator();
@@ -17,7 +17,7 @@ export default () => (
       },
     }}
   >
-    <Tabs.Screen name='Home' component={PostStackScreen} />
+    <Tabs.Screen name='Home' component={FeedStackScreen} />
     <Tabs.Screen name='Profile' component={ProfileStackScreen} />
   </Tabs.Navigator>
 );

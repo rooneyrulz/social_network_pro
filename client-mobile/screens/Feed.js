@@ -9,7 +9,7 @@ const Post = ({ navigation }) => {
     <ScreenContainer>
       <Button
         title='Go To Post Detail'
-        onPress={() => navigation.push('PostDetail')}
+        onPress={() => navigation.push('FeedDetail')}
       />
     </ScreenContainer>
   );
