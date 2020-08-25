@@ -19,7 +19,7 @@ const Register = ({ navigation }) => {
           </Text>
           <TouchableOpacity
             style={styles.authBtnBottom}
-            onPress={() => navigation.push('Login')}
+            onPress={() => navigation.pop()}
           >
             <Text style={styles.authBtnBottomText}>SIGN IN</Text>
           </TouchableOpacity>

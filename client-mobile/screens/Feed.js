@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 
 import ScreenContainer from './ScreenContainer';
 import FeedItem from '../components/FeedItem';
-import globalStyle from '../styles/styles';
 
 const Post = ({ navigation }) => {
   const [posts, setPosts] = useState([
@@ -30,14 +29,23 @@ const Post = ({ navigation }) => {
   ]);
   return (
     <ScreenContainer>
-      <View>
-        <FlatList
-          data={posts}
-          renderItem={({ item }) => <FeedItem item={item} />}
-        />
+      <View style={styles.feedContainer}>
+        <View style={styles.feedListContainer}>
+          <FlatList
+            data={posts}
+            renderItem={({ item }) => <FeedItem item={item} />}
+          />
+        </View>
       </View>
     </ScreenContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  feedContainer: {
+    flex: 1,
+  },
+  feedListContainer: {},
+});
 
 export default Post;

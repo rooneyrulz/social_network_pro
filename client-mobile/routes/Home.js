@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import FeedStackScreen from './Feed';
+import { FeedStackScreen, NewFeedStackScreen } from './Feed';
 import ProfileStackScreen from './Profile';
 
 const Tabs = createBottomTabNavigator();
@@ -18,6 +18,7 @@ export default () => (
     }}
   >
     <Tabs.Screen name='Home' component={FeedStackScreen} />
+    <Tabs.Screen name='NewFeed' component={NewFeedStackScreen} />
     <Tabs.Screen name='Profile' component={ProfileStackScreen} />
   </Tabs.Navigator>
 );

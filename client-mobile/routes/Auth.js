@@ -17,6 +17,7 @@ export default () => (
         headerTitleAlign: 'center',
         headerStyle: { backgroundColor: 'tomato' },
         headerTitleStyle: { fontSize: 22 },
+        animationEnabled: false,
       }}
     />
     <AuthStack.Screen
@@ -28,6 +29,7 @@ export default () => (
         headerTitleAlign: 'center',
         headerStyle: { backgroundColor: 'tomato' },
         headerTitleStyle: { fontSize: 22 },
+        animationEnabled: false,
       }}
     />
   </AuthStack.Navigator>
