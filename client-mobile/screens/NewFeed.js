@@ -5,15 +5,23 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 const NewFeed = () => {
   return (
     <View style={styles.newFeedContainer}>
       <View style={styles.inputFieldWrapper}>
-        <TextInput style={styles.inputField} />
+        <TextInput
+          multiline
+          placeholder='What are you thinking about..'
+          style={styles.inputField}
+        />
       </View>
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={(value) => Alert.alert('todo!')}
+      >
         <Text style={styles.btnText}>POST</Text>
       </TouchableOpacity>
     </View>
@@ -25,6 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 10,
+    backgroundColor: '#fff',
   },
   inputField: {
     borderWidth: 1,
