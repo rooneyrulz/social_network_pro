@@ -8,6 +8,9 @@ import {
   Alert,
 } from 'react-native';
 
+// Comment Modal
+import Comment from './Comment';
+
 const FeedItem = ({ item }) => {
   return (
     <View style={styles.feedItemContainer}>
@@ -25,12 +28,7 @@ const FeedItem = ({ item }) => {
           >
             <Text style={styles.btnLikeText}>Like</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btnComment}
-            onPress={(value) => Alert.alert('todo!')}
-          >
-            <Text style={styles.btnCommentText}>Comment</Text>
-          </TouchableOpacity>
+          <Comment />
         </View>
       </View>
     </View>
@@ -62,15 +60,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   btnLikeText: {
-    color: '#fff',
-  },
-  btnComment: {
-    padding: 10,
-    backgroundColor: 'dodgerblue',
-    marginRight: 10,
-    borderRadius: 5,
-  },
-  btnCommentText: {
     color: '#fff',
   },
 });
