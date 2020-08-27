@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    padding: 8,
+    padding: 4,
   },
   inputField: {
     borderWidth: 1,

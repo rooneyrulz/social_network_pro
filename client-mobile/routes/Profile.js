@@ -8,7 +8,15 @@ const ProfileStack = createStackNavigator();
 
 export default () => (
   <ProfileStack.Navigator>
-    <ProfileStack.Screen name='Profile' component={Profile} />
+    <ProfileStack.Screen
+      name='Profile'
+      component={Profile}
+      options={{
+        headerTintColor: '#fff',
+        headerTitleAlign: 'center',
+        headerStyle: { backgroundColor: 'dodgerblue' },
+      }}
+    />
     <ProfileStack.Screen name='ProfileDetail' component={ProfileDetail} />
   </ProfileStack.Navigator>
 );

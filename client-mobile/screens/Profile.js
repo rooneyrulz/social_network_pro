@@ -5,10 +5,7 @@ import ScreenContainer from '../screens/ScreenContainer';
 
 const Profile = ({ navigation }) => (
   <ScreenContainer>
-    <Button
-      title='Go To Profile Detail'
-      onPress={() => navigation.push('ProfileDetail')}
-    />
+    <Text>Profile..</Text>
   </ScreenContainer>
 );
 

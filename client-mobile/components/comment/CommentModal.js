@@ -23,7 +23,7 @@ const CommentModal = ({ isOpen, setVisible }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.modalBody}>
-        <Text>Modal Body</Text>
+        <Text>Comments...</Text>
       </View>
       <View style={styles.modalFooter}>
         <NewComment />
@@ -38,19 +38,23 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     flex: 1,
-    backgroundColor: 'gold',
+    // backgroundColor: 'gold',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  modalCloseText: {
+    fontSize: 28,
+    color: '#333',
+  },
   modalBody: {
     flex: 12,
-    backgroundColor: 'dodgerblue',
+    // backgroundColor: 'dodgerblue',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalFooter: {
     flex: 2,
-    backgroundColor: 'tomato',
+    backgroundColor: 'dodgerblue',
     justifyContent: 'center',
     alignItems: 'center',
   },

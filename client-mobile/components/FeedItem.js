@@ -7,48 +7,58 @@ import {
   Image,
   Alert,
 } from 'react-native';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 // Comment Modal
-import Comment from './Comment';
+import Comment from './comment/Comment';
 
 const FeedItem = ({ item }) => {
   return (
     <View style={styles.feedItemContainer}>
-      <View style={styles.feedItem}>
+      <View style={styles.feedItemHeader}>
         <Text style={styles.feedItemTitle}>{item.title}</Text>
+        <Text style={styles.feedItemSubTitle}>{new Date().toISOString()}</Text>
+      </View>
+      <View style={styles.feedItemBody}>
         <Image
           resizeMode='contain'
           source={require('../assets/images/Penguins.jpg')}
           style={{ width: '100%', height: 300 }}
         />
-        <View style={styles.feedItemButtonWrapper}>
-          <TouchableOpacity
-            style={styles.btnLike}
-            onPress={(value) => Alert.alert('todo!')}
-          >
-            <Text style={styles.btnLikeText}>Like</Text>
-          </TouchableOpacity>
-          <Comment />
-        </View>
+      </View>
+      <View style={styles.feedItemFooter}>
+        <TouchableOpacity
+          style={styles.btnLike}
+          onPress={(value) => Alert.alert('todo!')}
+        >
+          <Text style={styles.btnLikeText}>Like</Text>
+        </TouchableOpacity>
+        <Comment />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  feedItemContainer: {},
-  feedItem: {
-    width: '100%',
+  feedItemContainer: {
+    flex: 1,
     backgroundColor: '#fff',
-    marginVertical: 5,
+    marginVertical: 8,
     padding: 20,
   },
+  feedItemHeader: {
+    marginBottom: 5,
+  },
   feedItemTitle: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 5,
     color: '#333',
   },
-  feedItemButtonWrapper: {
+  feedItemSubTitle: {
+    fontSize: 12,
+    color: '#333',
+  },
+  feedItemFooter: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

@@ -14,6 +14,7 @@ export default () => (
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        // backgroundColor: 'dodgerblue',
       },
     }}
   >
