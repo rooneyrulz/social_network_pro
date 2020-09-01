@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
   if (!token || token === '') {
     req.isAuth = false;
     res.status(401).send('Authorization failed..');
-    next();
+    return next();
   }
 
   let decoded;
@@ -15,13 +15,13 @@ module.exports = (req, res, next) => {
   } catch (error) {
     req.isAuth = false;
     res.status(401).send('Authorization failed..');
-    next();
+    return next();
   }
 
   if (!decoded) {
     req.isAuth = false;
     res.status(401).send('Authorization failed..');
-    next();
+    return next();
   }
 
   req.isAuth = true;

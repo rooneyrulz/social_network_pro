@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,24 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const NewComment = () => {
+const NewComment = ({ addComment }) => {
+  const [newComment, setNewComment] = useState(null);
+
   return (
     <View style={styles.newCommentContainer}>
       <TextInput
         multiline
         placeholder='Write your comment..'
         style={styles.inputField}
+        onChangeText={(value) => setNewComment(value)}
       />
       <TouchableOpacity
         style={styles.btn}
-        onPress={(value) => Alert.alert('todo!')}
+        onPress={() =>
+          newComment ? addComment(newComment) : Alert.alert('Enter something..')
+        }
       >
-        <Text style={styles.btnText}>POST</Text>
+        <Text style={styles.btnText}>ADD</Text>
       </TouchableOpacity>
     </View>
   );

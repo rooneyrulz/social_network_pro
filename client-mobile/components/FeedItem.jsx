@@ -7,7 +7,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import Moment from 'moment';
 
 // Comment Modal
 import Comment from './comment/Comment';
@@ -17,7 +17,9 @@ const FeedItem = ({ item }) => {
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItemHeader}>
         <Text style={styles.feedItemTitle}>{item.title}</Text>
-        <Text style={styles.feedItemSubTitle}>{new Date().toISOString()}</Text>
+        <Text style={styles.feedItemSubTitle}>
+          {Moment(new Date().toISOString()).calendar()}
+        </Text>
       </View>
       <View style={styles.feedItemBody}>
         <Image

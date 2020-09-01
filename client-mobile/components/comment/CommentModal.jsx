@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,55 @@ import {
   Modal,
   TouchableOpacity,
   StyleSheet,
+  FlatList,
 } from 'react-native';
 
 // New Comment
 import NewComment from './NewComment';
+import CommentItem from './CommentItem';
 
 const CommentModal = ({ isOpen, setVisible }) => {
+  const [comments, setComments] = useState([
+    {
+      key: Math.random().toString(),
+      text: 'nice',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'wow amazing',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'hey man nice',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'great',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'nice',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'wow amazing',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'hey man nice',
+    },
+    {
+      key: Math.random().toString(),
+      text: 'great',
+    },
+  ]);
+
+  const pushNewComment = (comment) =>
+    setComments([
+      { key: Math.random().toString(), text: comment },
+      ...comments,
+    ]);
+
   return (
     <Modal visible={isOpen} style={styles.modal}>
       <View style={styles.modalHeader}>
@@ -23,10 +66,13 @@ const CommentModal = ({ isOpen, setVisible }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.modalBody}>
-        <Text>Comments...</Text>
+        <FlatList
+          data={comments}
+          renderItem={({ item }) => <CommentItem item={item} />}
+        />
       </View>
       <View style={styles.modalFooter}>
-        <NewComment />
+        <NewComment addComment={pushNewComment} />
       </View>
     </Modal>
   );
@@ -50,7 +96,6 @@ const styles = StyleSheet.create({
     flex: 12,
     // backgroundColor: 'dodgerblue',
     justifyContent: 'center',
-    alignItems: 'center',
   },
   modalFooter: {
     flex: 2,

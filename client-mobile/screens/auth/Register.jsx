@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
-import ScreenContainer from '../../screens/ScreenContainer';
-import LoginForm from '../../forms/LoginForm';
+import ScreenContainer from '../ScreenContainer';
+import RegisterForm from '../../forms/RegisterForm';
 
 import styles from '../../styles/auth';
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
   return (
     <ScreenContainer>
       <View style={styles.authContainer}>
         <View style={styles.authFormWrapper}>
-          <LoginForm />
+          <RegisterForm />
         </View>
         <View style={styles.authHelpTextWrapper}>
           <Text style={styles.authHelpText}>
-            Don't you already have an account?
+            If you already have an account..
           </Text>
           <TouchableOpacity
             style={styles.authBtnBottom}
-            onPress={() => navigation.push('Register')}
+            onPress={() => navigation.pop()}
           >
-            <Text style={styles.authBtnBottomText}>SIGN UP</Text>
+            <Text style={styles.authBtnBottomText}>SIGN IN</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -29,4 +29,4 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default Register;
