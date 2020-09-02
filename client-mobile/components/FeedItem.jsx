@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,15 @@ import {
   Image,
   Alert,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import Moment from 'moment';
 
 // Comment Modal
 import Comment from './comment/Comment';
 
 const FeedItem = ({ item }) => {
+  const [isLiked, setIsLiked] = useState(false);
+
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItemHeader}>
@@ -27,13 +30,21 @@ const FeedItem = ({ item }) => {
           source={require('../assets/images/Penguins.jpg')}
           style={{ width: '100%', height: 300 }}
         />
+        <View style={styles.count}>
+          <Text style={styles.likeCount}>Likes: 0</Text>
+          <Text style={styles.commentCount}>Comments: 0</Text>
+        </View>
       </View>
       <View style={styles.feedItemFooter}>
         <TouchableOpacity
           style={styles.btnLike}
-          onPress={(value) => Alert.alert('todo!')}
+          onPress={(value) => setIsLiked((prev) => !prev)}
         >
-          <Text style={styles.btnLikeText}>Like</Text>
+          {isLiked ? (
+            <AntDesign name='like1' size={28} color='dodgerblue' />
+          ) : (
+            <AntDesign name='like2' size={28} color='#333' />
+          )}
         </TouchableOpacity>
         <Comment />
       </View>
@@ -64,15 +75,29 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#555',
+    paddingTop: 5,
   },
   btnLike: {
     padding: 10,
-    backgroundColor: 'dodgerblue',
+    // backgroundColor: 'dodgerblue',
     marginRight: 5,
-    borderRadius: 5,
   },
-  btnLikeText: {
-    color: '#fff',
+
+  count: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+  likeCount: {
+    marginRight: 10,
+    color: '#333',
+  },
+  commentCount: {
+    color: '#333',
   },
 });
 

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Modal,
 } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 // Comment Modal
 import CommentModal from './CommentModal';
@@ -22,6 +23,7 @@ const Comment = () => {
         style={styles.btnComment}
         onPress={() => setIsOpen(true)}
       >
+        <FontAwesome name='comment-o' size={25} color='#333' />
         <Text style={styles.btnCommentText}>Comment</Text>
       </TouchableOpacity>
       <CommentModal isOpen={isOpen} setVisible={setVisible} />
@@ -31,13 +33,17 @@ const Comment = () => {
 
 const styles = StyleSheet.create({
   btnComment: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 10,
-    backgroundColor: 'dodgerblue',
+    // backgroundColor: 'dodgerblue',
     marginRight: 10,
-    borderRadius: 5,
   },
   btnCommentText: {
-    color: '#fff',
+    marginLeft: 5,
+    color: '#333',
   },
 });
 

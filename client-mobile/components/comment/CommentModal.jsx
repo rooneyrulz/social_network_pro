@@ -8,6 +8,8 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
+import Swipeout from 'react-native-swipeout';
+import { AntDesign, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 // New Comment
 import NewComment from './NewComment';
@@ -49,6 +51,25 @@ const CommentModal = ({ isOpen, setVisible }) => {
     },
   ]);
 
+  const swipeButtons = [
+    {
+      component: (
+        <View style={styles.btnEdit}>
+          <Entypo name='edit' size={17} color='black' />
+        </View>
+      ),
+      onPress: (e) => Alert.alert('todo'),
+    },
+    {
+      component: (
+        <View style={styles.btnDelete}>
+          <MaterialCommunityIcons name='delete-sweep' size={25} color='black' />
+        </View>
+      ),
+      onPress: (e) => Alert.alert('todo'),
+    },
+  ];
+
   const pushNewComment = (comment) =>
     setComments([
       { key: Math.random().toString(), text: comment },
@@ -62,13 +83,21 @@ const CommentModal = ({ isOpen, setVisible }) => {
           style={styles.modalClose}
           onPress={() => setVisible()}
         >
-          <Text style={styles.modalCloseText}>X</Text>
+          <AntDesign name='down' size={28} color='black' />
         </TouchableOpacity>
       </View>
       <View style={styles.modalBody}>
         <FlatList
           data={comments}
-          renderItem={({ item }) => <CommentItem item={item} />}
+          renderItem={({ item }) => (
+            <Swipeout
+              style={{ backgroundColor: '#fff' }}
+              rowId={item.key}
+              right={swipeButtons}
+            >
+              <CommentItem item={item} />
+            </Swipeout>
+          )}
         />
       </View>
       <View style={styles.modalFooter}>
@@ -102,6 +131,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'dodgerblue',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  btnDelete: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  btnEdit: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
 });
 

@@ -1,34 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import Moment from 'moment';
 
 const CommentItem = ({ item }) => {
+  const [isLiked, setIsLiked] = useState(false);
+
   return (
     <View style={styles.commentItemContainer}>
-      {/* <View style={styles.commentItemHeader}>
-        <Text style={styles.commentItemTitle}>{}</Text>
-      </View> */}
       <View style={styles.commentItemBody}>
         <Text>{item.text}</Text>
+        <Text style={styles.commentItemSubTitle}>
+          {Moment(new Date().toISOString()).calendar()}
+        </Text>
       </View>
       <View style={styles.commentItemFooter}>
         <View style={styles.commentItemAction}>
           <TouchableOpacity
             style={styles.btnLike}
-            onPress={(value) => Alert.alert('todo!')}
+            onPress={(e) => setIsLiked((prev) => !prev)}
           >
-            <Text style={styles.btnLikeText}>Like</Text>
+            {isLiked ? (
+              <AntDesign name='like1' size={20} color='dodgerblue' />
+            ) : (
+              <AntDesign name='like2' size={20} color='#333' />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btnReply}
             onPress={(value) => Alert.alert('todo!')}
           >
+            <FontAwesome
+              style={styles.replyIcon}
+              name='comment-o'
+              size={20}
+              color='#333'
+            />
             <Text style={styles.btnReplyText}>Reply</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.commentItemSubTitle}>
-          {Moment(new Date().toISOString()).calendar()}
-        </Text>
+        <View style={styles.count}>
+          <Text style={styles.likeCount}>Likes: 0</Text>
+          <Text style={styles.replyCount}>Comments: 0</Text>
+        </View>
       </View>
     </View>
   );
@@ -36,13 +50,12 @@ const CommentItem = ({ item }) => {
 
 const styles = StyleSheet.create({
   commentItemContainer: {
-    width: '90%',
-    backgroundColor: '#ddd',
+    width: '94%',
+    borderRadius: 20,
     marginVertical: 5,
-    marginHorizontal: '5%',
+    marginHorizontal: '3%',
     padding: 10,
     justifyContent: 'center',
-    borderRadius: 20,
   },
   commentItemHeader: {
     marginBottom: 5,
@@ -56,6 +69,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   commentItemBody: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
   commentItemFooter: {
@@ -71,21 +88,39 @@ const styles = StyleSheet.create({
   },
   btnLike: {
     padding: 5,
-    backgroundColor: 'dodgerblue',
+    // backgroundColor: 'dodgerblue',
     marginRight: 5,
-    borderRadius: 5,
   },
   btnLikeText: {
     color: '#fff',
   },
   btnReply: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 5,
-    backgroundColor: 'dodgerblue',
     marginRight: 10,
-    borderRadius: 5,
+  },
+  replyIcon: {
+    marginRight: 5,
   },
   btnReplyText: {
-    color: '#fff',
+    color: '#333',
+  },
+  count: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+  likeCount: {
+    marginRight: 10,
+    color: '#333',
+  },
+  replyCount: {
+    color: '#333',
   },
 });
 

@@ -1,0 +1,27 @@
+<MaterialCommunityIcons name="delete-sweep" size={24} color="black" />
+
+<FontAwesome name="home" size={24} color="black" />
+<AntDesign name="home" size={24} color="black" />
+
+<AntDesign name="edit" size={24} color="black" />
+
+<Feather name="edit" size={24} color="black" />
+
+<Feather name="users" size={24} color="black" />
+<Entypo name="users" size={24} color="black" />
+
+<AntDesign name="down" size={24} color="black" />
+
+<AntDesign name="right" size={24} color="black" />
+
+<AntDesign name="plus" size={24} color="black" />
+
+<AntDesign name="clouduploado" size={24} color="black" />
+
+<MaterialCommunityIcons name="gesture-swipe-left" size={24} color="black" />
+
+<AntDesign name="like1" size={24} color="black" />
+<AntDesign name="like2" size={24} color="black" />
+
+<AntDesign name="dislike1" size={24} color="black" />
+<AntDesign name="dislike2" size={24} color="black" />
