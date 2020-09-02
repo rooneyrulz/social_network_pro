@@ -6,8 +6,8 @@ import like from './like';
 import comment from './comment';
 
 export default combineReducers({
-  auth,
-  feed,
-  like,
-  comment,
+    auth,
+    feed,
+    like,
+    comment,
 });
