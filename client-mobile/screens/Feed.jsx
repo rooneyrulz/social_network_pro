@@ -1,38 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
+
+// Redux
+import { connect } from 'react-redux';
+import { getFeeds } from '../actions/feed';
 
 import ScreenContainer from './ScreenContainer';
 import FeedItem from '../components/FeedItem';
 
-const Post = ({ navigation }) => {
-  const [posts, setPosts] = useState([
-    {
-      key: Math.random().toString(),
-      title: 'post one',
-    },
-    {
-      key: Math.random().toString(),
-      title: 'post two',
-    },
-    {
-      key: Math.random().toString(),
-      title: 'post three',
-    },
-    {
-      key: Math.random().toString(),
-      title: 'post four',
-    },
-    {
-      key: Math.random().toString(),
-      title: 'post five',
-    },
-  ]);
-  return (
+const Post = ({ feeds: { feeds, feedLoading }, getFeeds }) => {
+  useEffect(() => {
+    getFeeds();
+    console.log(feeds);
+  }, [getFeeds, feedLoading]);
+
+  return feedLoading ? (
+    <Text>Loading...</Text>
+  ) : (
     <ScreenContainer>
       <View style={styles.feedContainer}>
         <View style={styles.feedListContainer}>
           <FlatList
-            data={posts}
+            keyExtractor={(item) => item._id}
+            data={feeds}
             renderItem={({ item }) => <FeedItem item={item} />}
           />
         </View>
@@ -41,6 +31,10 @@ const Post = ({ navigation }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  feeds: state.feed,
+});
+
 const styles = StyleSheet.create({
   feedContainer: {
     flex: 1,
@@ -48,4 +42,4 @@ const styles = StyleSheet.create({
   feedListContainer: {},
 });
 
-export default Post;
+export default connect(mapStateToProps, { getFeeds })(Post);

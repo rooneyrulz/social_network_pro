@@ -54,6 +54,7 @@ export const createFeed = (payload) => async(dispatch) => {
 
     try {
         const { data } = await axios.post(`${URI}/create`, payload, config);
+        console.log(data);
         dispatch({ type: CREATE_FEED, payload: data });
     } catch (error) {
         console.log(error);

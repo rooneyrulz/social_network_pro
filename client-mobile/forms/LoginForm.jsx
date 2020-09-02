@@ -19,7 +19,7 @@ const LoginForm = ({ loginUser }) => {
     <Formik
       initialValues={{ username: '', password: '' }}
       validationSchema={loginSchema}
-      onSubmit={(value) => {}}
+      onSubmit={(value) => loginUser(value)}
     >
       {(props) => (
         <View>

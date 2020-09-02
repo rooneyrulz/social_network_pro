@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import {
-  USER_LOADED,
-  LOGIN_SUCCESS,
-  REGISTER_SUCCESS,
-  LOGIN_FAIL,
-  REGISTER_FAIL,
-  AUTH_ERROR,
+    USER_LOADED,
+    LOGIN_SUCCESS,
+    REGISTER_SUCCESS,
+    LOGIN_FAIL,
+    REGISTER_FAIL,
+    AUTH_ERROR,
 } from './types';
 
 import setAuthToken from '../utils/setHeader';
@@ -14,62 +14,60 @@ import setAuthToken from '../utils/setHeader';
 const URI = 'http://192.168.43.200:5000/api/auth';
 
 // Load User
-export const loadUser = () => async (dispatch) => {
-  if (await AsyncStorage.getItem('token'))
-    setAuthToken(await AsyncStorage.getItem('token'));
+export const loadUser = () => async(dispatch) => {
+    if (await AsyncStorage.getItem('token'))
+        setAuthToken(await AsyncStorage.getItem('token'));
 
-  const config = {
-    header: {
-      'Content-Type': 'application/json',
-    },
-  };
+    const config = {
+        header: {
+            'Content-Type': 'application/json',
+        },
+    };
 
-  try {
-    const { data } = await axios.get(`${URI}/user`, config);
-    console.log(data);
-    dispatch({ type: USER_LOADED, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: AUTH_ERROR });
-  }
+    try {
+        const { data } = await axios.get(`${URI}/user`, config);
+        dispatch({ type: USER_LOADED, payload: data });
+    } catch (error) {
+        console.log(error);
+        dispatch({ type: AUTH_ERROR });
+    }
 };
 
 // Login User
-export const loginUser = (formData) => async (dispatch) => {
-  dispatch(loadUser());
+export const loginUser = (formData) => async(dispatch) => {
+    dispatch(loadUser());
 
-  const config = {
-    header: {
-      'Content-Type': 'application/json',
-    },
-  };
+    const config = {
+        header: {
+            'Content-Type': 'application/json',
+        },
+    };
 
-  try {
-    const { data } = await axios.post(`${URI}/login`, formData, config);
-    console.log(data);
-    dispatch({ type: LOGIN_SUCCESS, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: LOGIN_FAIL });
-  }
+    try {
+        const { data } = await axios.post(`${URI}/login`, formData, config);
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
+    } catch (error) {
+        console.log(error);
+        dispatch({ type: LOGIN_FAIL });
+    }
 };
 
 // Register User
-export const registerUser = (formData) => async (dispatch) => {
-  dispatch(loadUser());
+export const registerUser = (formData) => async(dispatch) => {
+    dispatch(loadUser());
 
-  const config = {
-    header: {
-      'Content-Type': 'application/json',
-    },
-  };
+    const config = {
+        header: {
+            'Content-Type': 'application/json',
+        },
+    };
 
-  try {
-    const { data } = await axios.post(`${URI}/register`, formData, config);
-    console.log(data);
-    dispatch({ type: REGISTER_SUCCESS, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: REGISTER_FAIL });
-  }
+    try {
+        const { data } = await axios.post(`${URI}/register`, formData, config);
+        console.log(data);
+        dispatch({ type: REGISTER_SUCCESS, payload: data });
+    } catch (error) {
+        console.log(error);
+        dispatch({ type: REGISTER_FAIL });
+    }
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,13 @@ import {
   Alert,
 } from 'react-native';
 
-const NewFeed = () => {
+// Redux
+import { connect } from 'react-redux';
+import { createFeed } from '../actions/feed';
+
+const NewFeed = ({ createFeed }) => {
+  const [newFeed, setNewFeed] = useState({ text: '' });
+  console.log(newFeed);
   return (
     <View style={styles.newFeedContainer}>
       <View style={styles.inputFieldWrapper}>
@@ -16,11 +22,12 @@ const NewFeed = () => {
           multiline
           placeholder='What are you thinking about..'
           style={styles.inputField}
+          onChangeText={(value) => setNewFeed({ ...newFeed, text: value })}
         />
       </View>
       <TouchableOpacity
         style={styles.btn}
-        onPress={(value) => Alert.alert('todo!')}
+        onPress={(e) => console.log(newFeed)}
       >
         <Text style={styles.btnText}>POST</Text>
       </TouchableOpacity>
@@ -57,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewFeed;
+export default connect(null, { createFeed })(NewFeed);

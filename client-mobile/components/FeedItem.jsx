@@ -19,9 +19,9 @@ const FeedItem = ({ item }) => {
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItemHeader}>
-        <Text style={styles.feedItemTitle}>{item.title}</Text>
+        <Text style={styles.feedItemTitle}>{item.text}</Text>
         <Text style={styles.feedItemSubTitle}>
-          {Moment(new Date().toISOString()).calendar()}
+          {Moment(item.date).calendar()}
         </Text>
       </View>
       <View style={styles.feedItemBody}>
@@ -31,8 +31,10 @@ const FeedItem = ({ item }) => {
           style={{ width: '100%', height: 300 }}
         />
         <View style={styles.count}>
-          <Text style={styles.likeCount}>Likes: 0</Text>
-          <Text style={styles.commentCount}>Comments: 0</Text>
+          <Text style={styles.likeCount}>Likes: {item.likes.length}</Text>
+          <Text style={styles.commentCount}>
+            Comments: {item.comments.length}
+          </Text>
         </View>
       </View>
       <View style={styles.feedItemFooter}>
