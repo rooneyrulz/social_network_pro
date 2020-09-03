@@ -1,70 +1,62 @@
 import axios from 'axios';
 import {
-  GET_LIKES,
-  CREATE_LIKE,
-  GET_POST_LIKES,
-  REMOVE_LIKE,
-  LIKE_ERROR,
+    GET_FEED_LIKES,
+    CREATE_FEED_LIKE,
+    REMOVE_FEED_LIKE,
+    FEED_LIKE_ERROR,
+    GET_COMMENT_LIKES,
+    CREATE_COMMENT_LIKE,
+    REMOVE_COMMENT_LIKE,
+    COMMENT_LIKE_ERROR,
+    GET_REPLY_LIKES,
+    CREATE_REPLY_LIKE,
+    REMOVE_REPLY_LIKE,
+    REPLY_LIKE_ERROR,
 } from './types';
 
 const URI = 'http://192.168.43.200:5000/api/like';
 
-// Get All Likes
-export const getLikes = () => async (dispatch) => {
-  const config = {
-    'Content-Type': 'application/json',
-  };
+// Get All Feed Likes
+export const getFeedLikes = (id) => async(dispatch) => {
+    const config = {
+        'Content-Type': 'application/json',
+    };
 
-  try {
-    const { data } = await axios.get(`${URI}`, config);
-    dispatch({ type: GET_LIKES, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: LIKE_ERROR, payload: error.response.data });
-  }
+    try {
+        const { data } = await axios.get(`${URI}/${id}`, config);
+        dispatch({ type: GET_FEED_LIKES, payload: data });
+    } catch (error) {
+        console.log(error);
+        dispatch({ type: FEED_LIKE_ERROR, payload: error.response.data });
+    }
 };
 
-// Get All Likes By Post
-export const getPostLikes = (id) => async (dispatch) => {
-  const config = {
-    'Content-Type': 'application/json',
-  };
+// Create Feed Like
+export const createFeedLike = (id) => async(dispatch) => {
+    const config = {
+        'Content-Type': 'application/json',
+    };
 
-  try {
-    const { data } = await axios.get(`${URI}/${id}`, config);
-    dispatch({ type: GET_POST_LIKES, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: LIKE_ERROR, payload: error.response.data });
-  }
+    try {
+        const { data } = await axios.get(`${URI}/${id}/create`, config);
+        dispatch({ type: CREATE_FEED_LIKE, payload: data });
+    } catch (error) {
+        console.log(error);
+        dispatch({ type: FEED_LIKE_ERROR, payload: error.response.data });
+    }
 };
 
-// Create Like
-export const createLike = (id) => async (dispatch) => {
-  const config = {
-    'Content-Type': 'application/json',
-  };
+// Remove Feed Like
+export const removeFeedLike = (id) => async(dispatch) => {
+    const config = {
+        'Content-Type': 'application/json',
+    };
 
-  try {
-    const { data } = await axios.get(`${URI}/${id}/create`, config);
-    dispatch({ type: CREATE_LIKE, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: LIKE_ERROR, payload: error.response.data });
-  }
-};
-
-// Remove Like
-export const removeLike = (id) => async (dispatch) => {
-  const config = {
-    'Content-Type': 'application/json',
-  };
-
-  try {
-    const { data } = await axios.get(`${URI}/${id}/delete`, config);
-    dispatch({ type: REMOVE_LIKE, payload: data });
-  } catch (error) {
-    console.log(error);
-    dispatch({ type: LIKE_ERROR, payload: error.response.data });
-  }
+    try {
+        const { data } = await axios.get(`${URI}/${id}/delete`, config);
+        dispatch({ type: REMOVE_FEED_LIKE, payload: data._id });
+    } catch (error) {
+        console.log(error);
+        dispatch({ type: FEED_LIKE_ERROR, payload: error.response.data });
+    }
 };

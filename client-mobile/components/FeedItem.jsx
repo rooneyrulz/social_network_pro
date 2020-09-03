@@ -7,15 +7,13 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 import Moment from 'moment';
 
-// Comment Modal
+// Components
 import Comment from './comment/Comment';
+import LikeAction from './LikeAction';
 
 const FeedItem = ({ item }) => {
-  const [isLiked, setIsLiked] = useState(false);
-
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItemHeader}>
@@ -38,21 +36,14 @@ const FeedItem = ({ item }) => {
         </View>
       </View>
       <View style={styles.feedItemFooter}>
-        <TouchableOpacity
-          style={styles.btnLike}
-          onPress={(value) => setIsLiked((prev) => !prev)}
-        >
-          {isLiked ? (
-            <AntDesign name='like1' size={28} color='dodgerblue' />
-          ) : (
-            <AntDesign name='like2' size={28} color='#333' />
-          )}
-        </TouchableOpacity>
+        <LikeAction />
         <Comment />
       </View>
     </View>
   );
 };
+
+export default FeedItem;
 
 const styles = StyleSheet.create({
   feedItemContainer: {
@@ -81,11 +72,6 @@ const styles = StyleSheet.create({
     borderTopColor: '#555',
     paddingTop: 5,
   },
-  btnLike: {
-    padding: 10,
-    // backgroundColor: 'dodgerblue',
-    marginRight: 5,
-  },
 
   count: {
     display: 'flex',
@@ -102,5 +88,3 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
-
-export default FeedItem;
