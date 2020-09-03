@@ -1,4 +1,5 @@
 import {
+    SET_LIKES_LOADING,
     GET_FEED_LIKES,
     CREATE_FEED_LIKE,
     REMOVE_FEED_LIKE,
@@ -27,6 +28,12 @@ export default (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
+        case SET_LIKES_LOADING:
+            return {
+                ...state,
+                likeLoading: true,
+            };
+
         case GET_FEED_LIKES:
             return {
                 ...state,

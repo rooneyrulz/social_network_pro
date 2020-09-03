@@ -12,6 +12,7 @@ import {
     CREATE_REPLY_LIKE,
     REMOVE_REPLY_LIKE,
     REPLY_LIKE_ERROR,
+    SET_LIKES_LOADING,
 } from './types';
 
 const URI = 'http://192.168.43.200:5000/api/like';
@@ -37,6 +38,8 @@ export const createFeedLike = (id) => async(dispatch) => {
         'Content-Type': 'application/json',
     };
 
+    dispatch({ type: SET_LIKES_LOADING });
+
     try {
         const { data } = await axios.get(`${URI}/${id}/create`, config);
         dispatch({ type: CREATE_FEED_LIKE, payload: data });
@@ -52,11 +55,13 @@ export const removeFeedLike = (id) => async(dispatch) => {
         'Content-Type': 'application/json',
     };
 
+    dispatch({ type: SET_LIKES_LOADING });
+
     try {
-        const { data } = await axios.get(`${URI}/${id}/delete`, config);
+        const { data } = await axios.get(`${URI}/${id}/remove`, config);
         dispatch({ type: REMOVE_FEED_LIKE, payload: data._id });
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         dispatch({ type: FEED_LIKE_ERROR, payload: error.response.data });
     }
 };

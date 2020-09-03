@@ -36,7 +36,7 @@ const FeedItem = ({ item }) => {
         </View>
       </View>
       <View style={styles.feedItemFooter}>
-        <LikeAction />
+        <LikeAction item={item} />
         <Comment />
       </View>
     </View>

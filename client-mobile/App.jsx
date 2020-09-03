@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 // Redux
@@ -8,12 +7,10 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 
-import setAuthToken from './utils/setHeader';
+import getToken from './utils/getToken';
 import RootNavigation from './routes/Root';
 
-AsyncStorage.getItem('token').then((value) => {
-  if (value) setAuthToken(value);
-});
+getToken();
 
 const App = () => {
   useEffect(() => {

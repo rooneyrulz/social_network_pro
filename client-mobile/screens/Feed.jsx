@@ -11,7 +11,6 @@ import FeedItem from '../components/FeedItem';
 const Post = ({ feeds: { feeds, feedLoading }, getFeeds }) => {
   useEffect(() => {
     getFeeds();
-    console.log(feeds);
   }, [getFeeds, feedLoading]);
 
   return feedLoading ? (
@@ -42,4 +41,6 @@ const styles = StyleSheet.create({
   feedListContainer: {},
 });
 
-export default connect(mapStateToProps, { getFeeds })(Post);
+export default connect(mapStateToProps, {
+  getFeeds,
+})(Post);
