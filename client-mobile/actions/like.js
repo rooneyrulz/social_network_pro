@@ -50,7 +50,7 @@ export const createFeedLike = (id) => async(dispatch) => {
 };
 
 // Remove Feed Like
-export const removeFeedLike = (id) => async(dispatch) => {
+export const removeFeedLike = (postID) => async(dispatch) => {
     const config = {
         'Content-Type': 'application/json',
     };
@@ -58,7 +58,7 @@ export const removeFeedLike = (id) => async(dispatch) => {
     dispatch({ type: SET_LIKES_LOADING });
 
     try {
-        const { data } = await axios.get(`${URI}/${id}/remove`, config);
+        const { data } = await axios.get(`${URI}/${postID}/remove`, config);
         dispatch({ type: REMOVE_FEED_LIKE, payload: data._id });
     } catch (error) {
         console.log(error.response.data);

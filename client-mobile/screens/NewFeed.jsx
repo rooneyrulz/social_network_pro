@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -13,8 +13,13 @@ import { connect } from 'react-redux';
 import { createFeed } from '../actions/feed';
 
 const NewFeed = ({ createFeed }) => {
-  const [newFeed, setNewFeed] = useState({ text: '' });
-  console.log(newFeed);
+  const [newFeed, setNewFeed] = React.useState({ text: '' });
+
+  const handleCreate = (e) => {
+    createFeed(newFeed);
+    setNewFeed((prev) => ({ ...prev, text: '' }));
+  };
+
   return (
     <View style={styles.newFeedContainer}>
       <View style={styles.inputFieldWrapper}>
@@ -25,10 +30,7 @@ const NewFeed = ({ createFeed }) => {
           onChangeText={(value) => setNewFeed({ ...newFeed, text: value })}
         />
       </View>
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={(e) => console.log(newFeed)}
-      >
+      <TouchableOpacity style={styles.btn} onPress={(e) => handleCreate()}>
         <Text style={styles.btnText}>POST</Text>
       </TouchableOpacity>
     </View>

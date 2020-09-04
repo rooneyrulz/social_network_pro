@@ -3,50 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Moment from 'moment';
 
-// Redux
-import { connect } from 'react-redux';
-import { getFeed } from '../actions/feed';
-import { createFeedLike, removeFeedLike } from '../actions/like';
-
 // Components
 import Comment from './comment/Comment';
 
-const FeedItem = ({
-  feedId,
-  feed: { feed, feedLoading },
-  auth: { user, isAuthenticated },
-  getFeed,
-  createFeedLike,
-  removeFeedLike,
-}) => {
+const FeedItem = ({ feed }) => {
   const [isLiked, setIsLiked] = React.useState(false);
 
   const likeAction = React.useMemo(
     () => ({
-      removeLike: (id) => removeFeedLike(id),
-      createLike: (id) => createFeedLike(id),
+      removeLike: () => setIsLiked(false),
+      createLike: () => setIsLiked(true),
     }),
     []
   );
 
-  React.useEffect(() => {
-    getFeed(feedId);
-  }, [getFeed, feedId, feedLoading]);
-
-  React.useEffect(() => {
-    setIsLiked((prev) =>
-      isAuthenticated &&
-      feed.likes.find(
-        (like) => like.owner === user._id && like.post === feed._id
-      )
-        ? true
-        : false
-    );
-  }, [feed, user, feedLoading]);
-
-  return feedLoading ? (
-    <Text>Loading...</Text>
-  ) : (
+  return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItemHeader}>
         <Text style={styles.feedItemTitle}>{feed.text}</Text>
@@ -61,23 +32,22 @@ const FeedItem = ({
           style={{ width: '100%', height: 300 }}
         />
         <View style={styles.count}>
-          <Text style={styles.likeCount}>Likes: {feed.likes.length}</Text>
+          <Text style={styles.likeCount}>
+            Likes: {feed.likes && feed.likes.length}
+          </Text>
           <Text style={styles.commentCount}>
-            Comments: {feed.comments.length}
+            Comments: {feed.comments && feed.likes.length}
           </Text>
         </View>
       </View>
       <View style={styles.feedItemFooter}>
         <View style={styles.likeActionWrapper}>
-          {isAuthenticated &&
-          feed.likes.find(
-            (like) => like.owner === user._id && like.post === feed._id
-          ) ? (
-            <TouchableOpacity onPress={(e) => likeAction.removeLike(feed._id)}>
+          {isLiked ? (
+            <TouchableOpacity onPress={(e) => likeAction.removeLike()}>
               <AntDesign name='like1' size={28} color='dodgerblue' />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={(e) => likeAction.createLike(feed._id)}>
+            <TouchableOpacity onPress={(e) => likeAction.createLike()}>
               <AntDesign name='like2' size={28} color='#333' />
             </TouchableOpacity>
           )}
@@ -88,16 +58,7 @@ const FeedItem = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  feed: state.feed,
-});
-
-export default connect(mapStateToProps, {
-  getFeed,
-  createFeedLike,
-  removeFeedLike,
-})(FeedItem);
+export default FeedItem;
 
 const styles = StyleSheet.create({
   feedItemContainer: {
