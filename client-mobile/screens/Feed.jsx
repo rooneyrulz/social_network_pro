@@ -22,7 +22,7 @@ const Post = ({ feeds: { feeds, feedLoading }, getFeeds }) => {
           <FlatList
             keyExtractor={(item) => item._id}
             data={feeds}
-            renderItem={({ item }) => <FeedItem item={item} />}
+            renderItem={({ item }) => <FeedItem feedId={item._id} />}
           />
         </View>
       </View>

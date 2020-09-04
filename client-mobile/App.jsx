@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
+import { AsyncStorage } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 // Redux
@@ -8,9 +9,15 @@ import store from './store';
 import { loadUser } from './actions/auth';
 
 import getToken from './utils/getToken';
+import setHeader from './utils/setHeader';
 import RootNavigation from './routes/Root';
 
-getToken();
+// setInterval(() => getToken(), 1000);
+AsyncStorage.getItem('token')
+  .then((token) => token && setHeader(token))
+  .catch((error) => {
+    throw new Error('Fucking error happening here..');
+  });
 
 const App = () => {
   useEffect(() => {

@@ -9,12 +9,14 @@ import {
     AUTH_ERROR,
 } from './types';
 import getToken from '../utils/getToken';
+import setHeader from '../utils/setHeader';
 
 const URI = 'http://192.168.43.200:5000/api/auth';
 
 // Load User
 export const loadUser = () => async(dispatch) => {
-    getToken();
+    if (await AsyncStorage.getItem('token'))
+        setHeader(await AsyncStorage.getItem('token'));
 
     const config = {
         header: {
