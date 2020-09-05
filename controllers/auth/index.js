@@ -32,17 +32,12 @@ exports.login = async(req, res, next) => {
 };
 
 exports.authUser = async(req, res, next) => {
-    if (req.user) {
-        const { _id } = req.user;
-        try {
-            const user = await User.findById(_id).lean();
-            if (!user)
-                return res.status(400).send('User not found, Authorization denied..');
-            return res.status(200).json(user);
-        } catch (error) {
-            return res.status(500).send(error.message);
-        }
-    } else {
-        return res.status(401).send('Unauthorized!');
+    try {
+        const user = await User.findById(req.user._id).lean();
+        if (!user)
+            return res.status(400).send('User not found, Authorization denied..');
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).send(error.message);
     }
 };

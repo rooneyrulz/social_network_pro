@@ -18,33 +18,16 @@ const LikeAction = ({
 
   React.useEffect(() => {
     getFeedLikes(feedID);
-  }, [getFeedLikes, feedID]);
-
-  React.useEffect(() => {
-    setIsLiked((prev) =>
-      !likeLoading &&
-      feedLikes.filter(
-        (like) =>
-          like.post._id === feedID &&
-          isAuthenticated &&
-          like.owner === user._id &&
-          like.kind === 'post'
-      ).length
-        ? true
-        : false
-    );
-  }, [getFeedLikes, likeLoading]);
+  }, [getFeedLikes, feedID, createFeedLike, removeFeedLike]);
 
   return (
     <View style={styles.likeActionWrapper}>
-      {likeLoading ? (
-        <></>
-      ) : isLiked ? (
-        <TouchableOpacity onPress={(e) => isLiked && removeFeedLike(feedID)}>
+      {isLiked ? (
+        <TouchableOpacity onPress={(e) => removeFeedLike(feedID)}>
           <AntDesign name='like1' size={28} color='dodgerblue' />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={(e) => !isLiked && createFeedLike(feedID)}>
+        <TouchableOpacity onPress={(e) => createFeedLike(feedID)}>
           <AntDesign name='like2' size={28} color='#333' />
         </TouchableOpacity>
       )}

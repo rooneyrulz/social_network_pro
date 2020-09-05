@@ -15,11 +15,13 @@ const URI = 'http://192.168.43.200:5000/api/auth';
 
 // Load User
 export const loadUser = () => async(dispatch) => {
-    AsyncStorage.getItem('X-native-token')
-        .then((token) => token && setHeader(token))
-        .catch((error) => {
-            throw new Error('Fucking error happening here..');
-        });
+    if (await AsyncStorage.getItem('X-native-token'))
+        setHeader(await AsyncStorage.getItem('X-native-token'));
+    // AsyncStorage.getItem('X-native-token')
+    //     .then((token) => token && setHeader(token))
+    //     .catch((error) => {
+    //         throw new Error('Fucking error happening here..');
+    //     });
 
     const config = {
         header: {
@@ -38,8 +40,6 @@ export const loadUser = () => async(dispatch) => {
 
 // Login User
 export const loginUser = (formData) => async(dispatch) => {
-    dispatch(loadUser());
-
     const config = {
         header: {
             'Content-Type': 'application/json',
@@ -53,12 +53,11 @@ export const loginUser = (formData) => async(dispatch) => {
         console.log(error);
         dispatch({ type: LOGIN_FAIL });
     }
+    dispatch(loadUser());
 };
 
 // Register User
 export const registerUser = (formData) => async(dispatch) => {
-    dispatch(loadUser());
-
     const config = {
         header: {
             'Content-Type': 'application/json',
@@ -73,4 +72,5 @@ export const registerUser = (formData) => async(dispatch) => {
         console.log(error);
         dispatch({ type: REGISTER_FAIL });
     }
+    dispatch(loadUser());
 };
