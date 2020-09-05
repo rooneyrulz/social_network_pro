@@ -1,22 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import Moment from 'moment';
 
 // Components
+import LikeAction from './LikeAction';
 import Comment from './comment/Comment';
 
 const FeedItem = ({ feed }) => {
-  const [isLiked, setIsLiked] = React.useState(false);
-
-  const likeAction = React.useMemo(
-    () => ({
-      removeLike: () => setIsLiked(false),
-      createLike: () => setIsLiked(true),
-    }),
-    []
-  );
-
   return (
     <View style={styles.feedItemContainer}>
       <View style={styles.feedItemHeader}>
@@ -41,17 +31,7 @@ const FeedItem = ({ feed }) => {
         </View>
       </View>
       <View style={styles.feedItemFooter}>
-        <View style={styles.likeActionWrapper}>
-          {isLiked ? (
-            <TouchableOpacity onPress={(e) => likeAction.removeLike()}>
-              <AntDesign name='like1' size={28} color='dodgerblue' />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={(e) => likeAction.createLike()}>
-              <AntDesign name='like2' size={28} color='#333' />
-            </TouchableOpacity>
-          )}
-        </View>
+        <LikeAction feedID={feed._id} />
         <Comment />
       </View>
     </View>
@@ -86,11 +66,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#555',
     paddingTop: 5,
-  },
-
-  likeActionWrapper: {
-    marginRight: 8,
-    padding: 5,
   },
 
   count: {

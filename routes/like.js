@@ -12,7 +12,7 @@ router.get('/:post_id', isAuth, likeController.getLikesByPost);
 router.get('/:post_id/create', isAuth, likeController.createLike);
 
 // REMOVE LIKES
-router.get('/:post_id/:like_id/remove', isAuth, likeController.removeLike);
+router.get('/:post_id/remove', isAuth, likeController.removeLike);
 
 // GET ALL LIKES BY COMMENT
 router.get('/:post_id/:comment_id', isAuth, likeController.getLikesByComment);

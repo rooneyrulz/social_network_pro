@@ -44,7 +44,7 @@ export const createFeedLike = (id) => async(dispatch) => {
         const { data } = await axios.get(`${URI}/${id}/create`, config);
         dispatch({ type: CREATE_FEED_LIKE, payload: data });
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         dispatch({ type: FEED_LIKE_ERROR, payload: error.response.data });
     }
 };
