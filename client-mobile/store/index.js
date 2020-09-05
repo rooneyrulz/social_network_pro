@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 // Root Reducer
@@ -8,7 +9,7 @@ const middleware = [thunk];
 const initialState = {};
 
 export default createStore(
-  RootReducer,
-  initialState,
-  applyMiddleware(...middleware)
+    RootReducer,
+    initialState,
+    composeWithDevTools(applyMiddleware(...middleware))
 );
