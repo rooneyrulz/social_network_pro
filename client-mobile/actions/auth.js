@@ -15,8 +15,11 @@ const URI = 'http://192.168.43.200:5000/api/auth';
 
 // Load User
 export const loadUser = () => async(dispatch) => {
-    if (await AsyncStorage.getItem('token'))
-        setHeader(await AsyncStorage.getItem('token'));
+    AsyncStorage.getItem('X-native-token')
+        .then((token) => token && setHeader(token))
+        .catch((error) => {
+            throw new Error('Fucking error happening here..');
+        });
 
     const config = {
         header: {

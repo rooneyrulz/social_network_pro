@@ -1,7 +1,7 @@
 const { verify } = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    const token = req.get('Authorization');
+    const token = req.get('X-native-auth');
     if (!token || token === '') {
         req.isAuth = false;
         res.status(401).send('Authorization failed..');

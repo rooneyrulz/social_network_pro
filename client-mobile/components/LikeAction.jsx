@@ -8,7 +8,7 @@ import { getFeedLikes, createFeedLike, removeFeedLike } from '../actions/like';
 
 const LikeAction = ({
   feedID,
-  auth: { user },
+  auth: { user, isAuthenticated },
   like: { likeLoading, feedLikes },
   getFeedLikes,
   createFeedLike,
@@ -26,6 +26,7 @@ const LikeAction = ({
       feedLikes.filter(
         (like) =>
           like.post._id === feedID &&
+          isAuthenticated &&
           like.owner === user._id &&
           like.kind === 'post'
       ).length

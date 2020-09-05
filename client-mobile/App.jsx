@@ -12,12 +12,13 @@ import getToken from './utils/getToken';
 import setHeader from './utils/setHeader';
 import RootNavigation from './routes/Root';
 
-// setInterval(() => getToken(), 1000);
-AsyncStorage.getItem('token')
+AsyncStorage.getItem('X-native-token')
   .then((token) => token && setHeader(token))
   .catch((error) => {
     throw new Error('Fucking error happening here..');
   });
+
+// getToken();
 
 const App = () => {
   useEffect(() => {

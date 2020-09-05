@@ -4,56 +4,68 @@ const { getPost, getCommentById, getReplyByComment } = require('../helpers');
 exports.getLikesByPost = async(req, res, next) => {
     const { post_id } = req.params;
     let likeList = [];
-    try {
-        const likes = await Like.find()
-            .and([{ post: post_id }, { kind: 'post' }])
-            .lean();
-        for (const like of likes) {
-            like.post = await getPost(like.post);
-            likeList.push(like);
+    if (req.isAuth) {
+        try {
+            const likes = await Like.find()
+                .and([{ post: post_id }, { kind: 'post' }])
+                .lean();
+            for (const like of likes) {
+                like.post = await getPost(like.post);
+                likeList.push(like);
+            }
+            return res.status(200).json(likeList);
+        } catch (error) {
+            return res.status(500).send(error.message);
         }
-        return res.status(200).json(likeList);
-    } catch (error) {
-        return res.status(500).send(error.message);
+    } else {
+        return res.status(401).send('Unauthorized!');
     }
 };
 
 exports.createLike = async(req, res, next) => {
     const { post_id } = req.params;
 
-    try {
-        const post = await Post.findById(post_id).lean();
-        if (!post) return res.status(404).send('Post not found..');
-        const isLiked = await Like.findOne()
-            .and([{ post: post_id }, { owner: req.user }, { kind: 'post' }])
-            .lean();
-        if (isLiked) return res.status(400).send('Post has already been liked..');
-        const like = await new Like({
-            post: post_id,
-            owner: req.user,
-            kind: 'post',
-        }).save();
-        return res.status(201).json(like);
-    } catch (error) {
-        return res.status(500).send(error.message);
+    if (req.isAuth) {
+        try {
+            const post = await Post.findById(post_id).lean();
+            if (!post) return res.status(404).send('Post not found..');
+            const isLiked = await Like.findOne()
+                .and([{ post: post_id }, { owner: req.user }, { kind: 'post' }])
+                .lean();
+            if (isLiked) return res.status(400).send('Post has already been liked..');
+            const like = await new Like({
+                post: post_id,
+                owner: req.user,
+                kind: 'post',
+            }).save();
+            return res.status(201).json(like);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    } else {
+        return res.status(401).send('Unauthorized!');
     }
 };
 
 exports.removeLike = async(req, res, next) => {
     const { post_id } = req.params;
 
-    try {
-        const post = await Post.findById(post_id).lean();
-        if (!post) return res.status(404).send('Post not found..');
-        const isLiked = await Like.findOne()
-            .and([{ post: post_id }, { owner: req.user }, { kind: 'post' }])
-            .lean();
-        if (!isLiked)
-            return res.status(400).send('Post has not already been liked..');
-        const isUnliked = await Like.findByIdAndRemove(isLiked._id);
-        return res.status(200).json(isUnliked);
-    } catch (error) {
-        return res.status(500).send(error.message);
+    if (req.isAuth) {
+        try {
+            const post = await Post.findById(post_id).lean();
+            if (!post) return res.status(404).send('Post not found..');
+            const isLiked = await Like.findOne()
+                .and([{ post: post_id }, { owner: req.user }, { kind: 'post' }])
+                .lean();
+            if (!isLiked)
+                return res.status(400).send('Post has not already been liked..');
+            const isUnliked = await Like.findByIdAndRemove(isLiked._id);
+            return res.status(200).json(isUnliked);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    } else {
+        return res.status(401).send('Unauthorized!');
     }
 };
 
